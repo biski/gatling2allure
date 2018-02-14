@@ -2,6 +2,7 @@ package processors;
 
 import objects.Request;
 import objects.Session;
+import parser.JsonFormatter;
 
 import java.util.ArrayList;
 
@@ -98,7 +99,7 @@ public class RequestProcessor {
                     sb.append(request.get(i++));
 
                 }
-                stringBody = sb.toString();
+                stringBody = new JsonFormatter().format(sb.toString());
             }
         }
     }

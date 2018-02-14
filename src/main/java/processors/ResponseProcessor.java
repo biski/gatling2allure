@@ -1,7 +1,7 @@
 package processors;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import parser.JsonFormatter;
 
 import java.util.ArrayList;
 
@@ -18,24 +18,11 @@ public class ResponseProcessor {
         String[] split = stringBuilder.toString().split("body=");
         if (split.length > 0) {
             response = split[0];
-            responseBody = split[1];
+            responseBody = new JsonFormatter().format(split[1]);
         } else {
             response = fullResponse.toString();
         }
 
-
-        JSONObject json = null; // Convert text to object
-        try {
-            json = new JSONObject(responseBody);
-        } catch (JSONException e) {
-            //System.out.println(responseBody);
-            e.printStackTrace();
-        }
-        try {
-            responseBody = json.toString(4); // Print it with specified indentation
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public String getResponse() {
@@ -45,4 +32,6 @@ public class ResponseProcessor {
     public String getResponseBody() {
         return responseBody;
     }
+
+
 }

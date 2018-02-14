@@ -1,8 +1,8 @@
 package parser;
 
-import io.qameta.allure.FileSystemResultsWriter;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import io.qameta.allure.model.*;
+import io.qameta.allure.model.Attachment;
 import io.qameta.allure.util.ResultsUtils;
 import processors.RequestProcessor;
 
@@ -90,12 +90,7 @@ public class LogParser {
                     new StepResult()
                             .withName(request.getRequestType() + " " + request.getRequestName())
                             .withAttachments(
-                                    createAttachment("String body", "application/json", request.getStringBody(), fileSystemResultsWriter),
-                                    createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter),
-                                    createAttachment("Session buffer", "application/json", request.getSessionBuffe().toString(), fileSystemResultsWriter),
-                                    createAttachment("RequestProcessor", "application/json", request.getRequest().toString(), fileSystemResultsWriter),
-                                    createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter),
-                                    createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter)
+                                    getAttachments(fileSystemResultsWriter, request)
                             )
                             .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
                             .withStart(request.getSession().getStartDate())
@@ -116,6 +111,22 @@ public class LogParser {
         fileSystemResultsWriter.write(testResultContainer);
         simulation.values().forEach(fileSystemResultsWriter::write);
 
+    }
+
+    private Attachment[] getAttachments(FileSystemResultsWriter fileSystemResultsWriter, RequestProcessor request) {
+        ArrayList<Attachment> attachments = new ArrayList<>();
+
+        if(request.getRequestType().equals("POST")) {
+            attachments.add(createAttachment("String body", "application/json", request.getStringBody(), fileSystemResultsWriter));
+        }
+        attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffe().toString(), fileSystemResultsWriter));
+        attachments.add(createAttachment("RequestProcessor", "application/json", request.getRequest().toString(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
+
+        Attachment[] attachmentsArr = new Attachment[attachments.size()];
+        return attachments.toArray(attachmentsArr);
     }
 
     public Attachment createAttachment(String attachmentName, String attachmentType, String body, FileSystemResultsWriter fileSystemResultsWriter) {
