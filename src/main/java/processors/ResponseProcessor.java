@@ -14,7 +14,7 @@ public class ResponseProcessor {
 
     public ResponseProcessor(ArrayList fullResponse) {
         StringBuilder stringBuilder = new StringBuilder();
-        fullResponse.forEach(stringBuilder::append);
+        fullResponse.forEach(x -> stringBuilder.append(x).append("\n"));
         String[] split = stringBuilder.toString().split("body=");
         if (split.length > 0) {
             response = split[0];

@@ -91,7 +91,7 @@ public class RequestProcessor {
             if (request.get(i).startsWith("stringData")
                     || request.get(i).startsWith("compositeByteData")) {
                 StringBuilder sb = new StringBuilder();
-                i++;
+                sb.append(request.get(i++).replaceAll("(stringData=|compositeByteData=)", ""));
                 while (i < request.size()
                         && !request.get(i).matches("^[a-zA-Z]*=.*")
                         ) {
@@ -99,7 +99,10 @@ public class RequestProcessor {
                     sb.append(request.get(i++));
 
                 }
-                stringBody = new JsonFormatter().format(sb.toString());
+                String requestData = sb.toString().trim();
+                if(!requestData.equals("")) {
+                    stringBody = new JsonFormatter().format(requestData);
+                }
             }
         }
     }

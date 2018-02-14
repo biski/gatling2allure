@@ -7,9 +7,11 @@ import io.qameta.allure.util.ResultsUtils;
 import processors.RequestProcessor;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.qameta.allure.util.ResultsUtils.getHostName;
 import static io.qameta.allure.util.ResultsUtils.getThreadName;
@@ -19,13 +21,16 @@ import static io.qameta.allure.util.ResultsUtils.getThreadName;
  */
 public class LogParser {
 
-    ArrayList<RequestProcessor> requests;
-    public static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
-    public static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
+    private ArrayList<RequestProcessor> requests;
+    private static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
+    private static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
+
+    private static final String ALLURE_RESULTS_DIR = "allure-results";
+    private HashMap<String, TestResult> simulation;
 
     public static void main(String[] args) throws Exception {
         LogParser logParser = new LogParser();
-        logParser.parseLogFile();
+        logParser.splitLogToRequests();
         logParser.debug();
         logParser.generateAllureData();
 
@@ -36,17 +41,30 @@ public class LogParser {
     }
 
     private void generateAllureData() {
-        File resultsFolder = new File("allure-results");
-
+        File resultsFolder = new File(ALLURE_RESULTS_DIR);
         FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
 
-        HashMap<String, TestResult> simulation = new HashMap<>();
 
-        requests.forEach(request -> {
-            TestResult allureTest;
+        simulation = new HashMap<>();
+        requests.forEach(createOrUpdateAllureTest(fileSystemResultsWriter));
+
+        TestResultContainer testResultContainer = new TestResultContainer()
+                .withChildren(simulation.values().stream().map(TestResult::getUuid).collect(Collectors.toList()));
+
+        if (resultsFolder.exists()) {
+            resultsFolder.delete();
+        }
+        fileSystemResultsWriter.write(testResultContainer);
+        simulation.values().forEach(fileSystemResultsWriter::write);
+
+    }
+
+    private Consumer<RequestProcessor> createOrUpdateAllureTest(FileSystemResultsWriter fileSystemResultsWriter) {
+        return (RequestProcessor request) -> {
+
             String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
 
-            allureTest = simulation.computeIfAbsent(simulationName, k -> {
+            TestResult allureTest = simulation.computeIfAbsent(simulationName, k -> {
 
                 final List<Label> labels = new ArrayList<>();
                 labels.addAll(Arrays.asList(
@@ -98,30 +116,19 @@ public class LogParser {
             );
 
             if (!request.getSuccessful()) allureTest.setStatus(Status.FAILED);
-        });
-
-        TestResultContainer testResultContainer = new TestResultContainer()
-                .withName("xxx")
-                .withDescriptionHtml("<b>test result containe<br>")
-                .withChildren(simulation.values().stream().map(TestResult::getUuid).collect(Collectors.toList()));
-
-        if (resultsFolder.exists()) {
-            resultsFolder.delete();
-        }
-        fileSystemResultsWriter.write(testResultContainer);
-        simulation.values().forEach(fileSystemResultsWriter::write);
-
+        };
     }
 
     private Attachment[] getAttachments(FileSystemResultsWriter fileSystemResultsWriter, RequestProcessor request) {
         ArrayList<Attachment> attachments = new ArrayList<>();
+        attachments.add(createAttachment("Request", "text/plain", request.getRequestType() + " " + request.getUrl(), fileSystemResultsWriter));
 
-        if(request.getRequestType().equals("POST")) {
+        if (request.getRequestType().equals("POST")) {
             attachments.add(createAttachment("String body", "application/json", request.getStringBody(), fileSystemResultsWriter));
         }
         attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffe().toString(), fileSystemResultsWriter));
-        attachments.add(createAttachment("RequestProcessor", "application/json", request.getRequest().toString(), fileSystemResultsWriter));
+//        attachments.add(createAttachment("RequestProcessor", "application/json", request.getRequest().toString(), fileSystemResultsWriter));
         attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
         attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
 
@@ -142,11 +149,11 @@ public class LogParser {
                 .withType(attachmentType);
     }
 
-    public void parseLogFile() throws IOException {
+    public void splitLogToRequests() throws IOException {
 
         requests = new ArrayList<>();
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/example.log"));
+        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("src/main/resources/example.log"));
         ArrayList<String> buff = new ArrayList<>();
         String line;
         Boolean isRequest = false;
