@@ -1,14 +1,18 @@
 package parser;
 
 import io.qameta.allure.FileSystemResultsWriter;
+import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.model.*;
+import io.qameta.allure.util.ResultsUtils;
 import processors.RequestProcessor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static io.qameta.allure.util.ResultsUtils.getHostName;
+import static io.qameta.allure.util.ResultsUtils.getThreadName;
 
 /**
  * Created by wojciech on 25.11.17.
@@ -42,12 +46,45 @@ public class LogParser {
             TestResult allureTest;
             String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
 
-            allureTest = simulation.computeIfAbsent(simulationName, k -> new TestResult()
-                    .withName(simulationName)
-                    .withUuid(UUID.randomUUID().toString())
-                    .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                    .withStart(request.getSession().getStartDate())
-                    .withStop(request.getSession().getStartDate()+50));
+            allureTest = simulation.computeIfAbsent(simulationName, k -> {
+
+                final List<Label> labels = new ArrayList<>();
+                labels.addAll(Arrays.asList(
+                        //Packages grouping
+                        new Label().withName("package").withValue("example package"),
+                        new Label().withName("testClass").withValue("example test class"),
+                        new Label().withName("testMethod").withValue("example test method"),
+
+                        //xUnit grouping
+                        new Label().withName("parentSuite").withValue("parent suite"),
+                        new Label().withName("suite").withValue("suite name"),
+                        new Label().withName("subSuite").withValue("sub suite"),
+
+                        //Timeline grouping
+                        new Label().withName("host").withValue(getHostName()),
+                        new Label().withName("thread").withValue(getThreadName()),
+                        new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
+//                        new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue(request.getRequestType()),
+                        new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
+                        new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
+//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue(request.getRequestType()),
+//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue("FEATURE LABEL NAME"),
+//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue("FEATURE LABEL NAME2"),
+                        new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value()),
+                        new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("wojtek")
+                ));
+
+                return new TestResult()
+                        .withName(simulationName)
+                        .withUuid(UUID.randomUUID().toString())
+                        .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                        .withLabels(labels);
+            });
+//                    .withStart(request.getSession().getStartDate())
+//                    .withStop(request.getSession().getStartDate()+50));
+
+
+            allureTest.getLabels().add(new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue(request.getRequestName()));
 
             allureTest.getSteps().add(
                     new StepResult()
@@ -98,7 +135,7 @@ public class LogParser {
 
         requests = new ArrayList<>();
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/wojciech/Repositories/alluregatling/src/main/resources/debug.log"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/example.log"));
         ArrayList<String> buff = new ArrayList<>();
         String line;
         Boolean isRequest = false;
