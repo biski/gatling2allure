@@ -1,4 +1,4 @@
-package parser;
+package com.biski.parser;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.AllureLifecycle;

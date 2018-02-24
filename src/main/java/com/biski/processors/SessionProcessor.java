@@ -1,25 +1,24 @@
-package processors;
+package com.biski.processors;
 
-import objects.Session;
+import com.biski.objects.Session;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by wojciech on 13.01.18.
  */
 public class SessionProcessor {
-    private List<String> session;
+    private StringBuilder session;
     private String scenarioName;
     private String userId;
     private String attributes;
-    private String attributesCsv;
+    private StringBuilder attributesCsv;
     private HashMap<String, String> attributesMap;
     private Long startDate;
 
-    public SessionProcessor(List<String> session) {
+    public SessionProcessor(StringBuilder session) {
         this.session = session;
     }
 
@@ -36,14 +35,12 @@ public class SessionProcessor {
          onExit:     Session => Unit  = Session.NothingOnExit
          )
          */
-        StringBuilder sessionString = new StringBuilder();
-        session.forEach(x -> sessionString.append(x + "\n"));
 
-        ArrayList<StringBuffer> parameters = new ArrayList<>();
+        ArrayList<StringBuffer> parameters = new ArrayList<>(50);
         int i = 0;
         int openBrackets = 0;
-        parameters.add(new StringBuffer());
-        for (char c : sessionString.toString()
+        parameters.add(new StringBuffer(500));
+        for (char c : session.toString()
                 .replace("Session:\nSession(", "")
                 .replaceFirst("\\)$", "")
                 .toCharArray()) {
@@ -68,6 +65,7 @@ public class SessionProcessor {
 
 
         attributesMap = new HashMap<>();
+        attributesCsv = new StringBuilder(100);
 
 
         for (String pair : attributes
@@ -76,7 +74,7 @@ public class SessionProcessor {
                 .split(", (?![^(]*\\))")) {
             String[] keyValue = pair.split("->");
             attributesMap.put(keyValue[0].trim(), keyValue[1].trim());
-            attributesCsv += keyValue[0] + ",\"" + keyValue[1] + "\"\n";
+            attributesCsv.append(keyValue[0]) .append( ",\"").append(keyValue[1]).append("\"\n");
         }
 
         return new Session(scenarioName, userId, attributes, startDate);
@@ -96,7 +94,7 @@ public class SessionProcessor {
     }
 
     public String getAttributesCsv() {
-        return attributesCsv;
+        return attributesCsv.toString();
     }
 
     public Long getStartDate() {

@@ -1,13 +1,11 @@
-package parser;
+package com.biski.parser;
 
 import io.qameta.allure.*;
 import io.qameta.allure.model.*;
 import io.qameta.allure.util.ResultsUtils;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Consumer;
 
 import static io.qameta.allure.util.ResultsUtils.getHostName;
 import static io.qameta.allure.util.ResultsUtils.getThreadName;
@@ -48,7 +46,7 @@ public class dsfvsdaf {
 //        public static final String HOST_LABEL_NAME = "host";
 //        public static final String THREAD_LABEL_NAME = "thread";
 
-        final List<Label> labels = new ArrayList<>();
+        final List<Label> labels = new ArrayList<>(15);
         labels.addAll(Arrays.asList(
                 //Packages grouping
                 new Label().withName("package").withValue("example package"),

@@ -1,4 +1,4 @@
-package objects;
+package com.biski.objects;
 
 /**
  * Created by wojciech on 14.01.18.

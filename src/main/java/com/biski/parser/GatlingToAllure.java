@@ -1,15 +1,16 @@
-package parser;
+package com.biski.parser;
 
 import io.qameta.allure.*;
 import io.qameta.allure.model.*;
 import io.qameta.allure.model.Attachment;
 import io.qameta.allure.util.ResultsUtils;
-import processors.RequestProcessor;
+import com.biski.processors.RequestProcessor;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -19,54 +20,59 @@ import static io.qameta.allure.util.ResultsUtils.getThreadName;
 /**
  * Created by wojciech on 25.11.17.
  */
-public class LogParser {
+public class GatlingToAllure {
 
-    private ArrayList<RequestProcessor> requests;
+    private List<RequestProcessor> requests;
     private static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
     private static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
 
     private static final String ALLURE_RESULTS_DIR = "allure-results";
-    private HashMap<String, TestResult> simulation;
+    private HashMap<String, TestResult> simulations = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        LogParser logParser = new LogParser();
-        logParser.splitLogToRequests();
-        logParser.debug();
-        logParser.generateAllureData();
-
+        GatlingToAllure gatlingToAllure = new GatlingToAllure();
+        gatlingToAllure.splitLogToRequests();
+//        gatlingToAllure.debug();
+        gatlingToAllure.generateAllureData();
     }
 
-    private void debug() {
-        requests.forEach(request -> System.out.println(request.getSuccessful() + " " + request.getRequestName() + " " + request.getSession().getScenarioName() + " " + request.getUrl()));
-    }
+//    private void debug() {
+//        requests.forEach(
+//                request -> {
+//                    System.out.println(request.getSuccessful() + " " + request.getRequestName() + " " + request.getSession().getScenarioName() + " " + request.getUrl())
+//                }
+//        );
+//    }
 
     private void generateAllureData() {
         File resultsFolder = new File(ALLURE_RESULTS_DIR);
-        FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
-
-
-        simulation = new HashMap<>();
-        requests.forEach(createOrUpdateAllureTest(fileSystemResultsWriter));
-
-        TestResultContainer testResultContainer = new TestResultContainer()
-                .withChildren(simulation.values().stream().map(TestResult::getUuid).collect(Collectors.toList()));
-
         if (resultsFolder.exists()) {
             resultsFolder.delete();
         }
-        fileSystemResultsWriter.write(testResultContainer);
-        simulation.values().forEach(fileSystemResultsWriter::write);
+
+        FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
+
+        AtomicInteger requestCnt = new AtomicInteger(0);
+        requests.forEach(createOrUpdateAllureTest(requestCnt, fileSystemResultsWriter));
+
+
+        fileSystemResultsWriter.write(
+                new TestResultContainer()
+                        .withChildren(simulations.values().stream().map(TestResult::getUuid).collect(Collectors.toList())));
+
+        simulations.values().forEach(fileSystemResultsWriter::write);
 
     }
 
-    private Consumer<RequestProcessor> createOrUpdateAllureTest(FileSystemResultsWriter fileSystemResultsWriter) {
+    private Consumer<RequestProcessor> createOrUpdateAllureTest(AtomicInteger requestCnt, FileSystemResultsWriter fileSystemResultsWriter) {
         return (RequestProcessor request) -> {
 
+            System.out.println("Processing request " + requestCnt.getAndIncrement() + "/" + requests.size());
             String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
 
-            TestResult allureTest = simulation.computeIfAbsent(simulationName, k -> {
+            TestResult allureTest = simulations.computeIfAbsent(simulationName, k -> {
 
-                final List<Label> labels = new ArrayList<>();
+                final List<Label> labels = new ArrayList<>(12);
                 labels.addAll(Arrays.asList(
                         //Packages grouping
                         new Label().withName("package").withValue("example package"),
@@ -82,14 +88,9 @@ public class LogParser {
                         new Label().withName("host").withValue(getHostName()),
                         new Label().withName("thread").withValue(getThreadName()),
                         new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
-//                        new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue(request.getRequestType()),
                         new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
                         new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
-//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue(request.getRequestType()),
-//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue("FEATURE LABEL NAME"),
-//                    new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue("FEATURE LABEL NAME2"),
-                        new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value()),
-                        new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("wojtek")
+                        new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value())
                 ));
 
                 return new TestResult()
@@ -102,7 +103,9 @@ public class LogParser {
 //                    .withStop(request.getSession().getStartDate()+50));
 
 
-            allureTest.getLabels().add(new Label().withName(ResultsUtils.FEATURE_LABEL_NAME).withValue(request.getRequestName()));
+            allureTest.getLabels().add(new Label()
+                    .withName(ResultsUtils.FEATURE_LABEL_NAME)
+                    .withValue(request.getRequestName()));
 
             allureTest.getSteps().add(
                     new StepResult()
@@ -120,7 +123,7 @@ public class LogParser {
     }
 
     private Attachment[] getAttachments(FileSystemResultsWriter fileSystemResultsWriter, RequestProcessor request) {
-        ArrayList<Attachment> attachments = new ArrayList<>();
+        ArrayList<Attachment> attachments = new ArrayList<>(10);
         attachments.add(createAttachment("Request", "text/plain", request.getRequestType() + " " + request.getUrl(), fileSystemResultsWriter));
 
         if (request.getRequestType().equals("POST")) {
@@ -128,7 +131,6 @@ public class LogParser {
         }
         attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffe().toString(), fileSystemResultsWriter));
-//        attachments.add(createAttachment("RequestProcessor", "application/json", request.getRequest().toString(), fileSystemResultsWriter));
         attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
         attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
 
@@ -144,6 +146,7 @@ public class LogParser {
 
         fileSystemResultsWriter.write(attachmentUid, new ByteArrayInputStream(body.getBytes()));
 
+
         return new Attachment().withName(attachmentName)
                 .withSource(attachmentUid)
                 .withType(attachmentType);
@@ -151,10 +154,10 @@ public class LogParser {
 
     public void splitLogToRequests() throws IOException {
 
-        requests = new ArrayList<>();
+        requests = new ArrayList<>(1000);
 
-        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("src/main/resources/example.log"));
-        ArrayList<String> buff = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("/home/wojciech/log-20180220T135351.txt"));
+        ArrayList<String> buff = new ArrayList<>(1000);
         String line;
         Boolean isRequest = false;
         while ((line = bufferedReader.readLine()) != null) {
@@ -174,7 +177,7 @@ public class LogParser {
 
     }
 
-    public ArrayList<RequestProcessor> getRequests() {
+    public List<RequestProcessor> getRequests() {
         return requests;
     }
 }

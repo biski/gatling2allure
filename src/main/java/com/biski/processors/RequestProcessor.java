@@ -1,10 +1,13 @@
-package processors;
+package com.biski.processors;
 
-import objects.Request;
-import objects.Session;
-import parser.JsonFormatter;
+import com.biski.objects.Request;
+import com.biski.objects.Session;
+import com.biski.parser.JsonFormatter;
 
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -20,6 +23,7 @@ import java.util.ArrayList;
  buff.append("<<<<<<<<<<<<<<<<<<<<<<<<<")
  */
 public class RequestProcessor {
+    public static int cnt;
     public static final String BREAK = "=========================";
     ArrayList<String> buffer;
     String requestType;
@@ -31,10 +35,10 @@ public class RequestProcessor {
     ResponseProcessor responseProcessor;
     StringBuilder response = new StringBuilder();
     StringBuilder request = new StringBuilder();
-    ArrayList<String> headers = new ArrayList<>();
-    ArrayList<String> httpRequest = new ArrayList<>();
-    ArrayList<String> httpResponse = new ArrayList<>();
-    ArrayList<String> sessionBuffe = new ArrayList<>();
+    StringBuilder headers = new StringBuilder(500);
+    StringBuilder httpRequest = new StringBuilder(5000);
+    StringBuilder  httpResponse = new StringBuilder(5000);
+    StringBuilder sessionBuffe = new StringBuilder(4000);
 
 
     public RequestProcessor(ArrayList<String> buff) {
@@ -47,10 +51,12 @@ public class RequestProcessor {
         requestName = buffer.get(1).split(":")[0];
         isSuccessful = buffer.get(1).split(":")[1].trim().equals("OK");
 
+        System.out.println("Parsing request " + cnt++ + ": " + requestName);
+
         for (int i = 0; i < buffer.size(); i++) {
             if(buffer.get(i).equals("HTTP request:")) {
                 while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    httpRequest.add(buffer.get(i++));
+                    httpRequest.append(buffer.get(i++)).append("\n");
                 }
                 parseRequest(httpRequest);
             }
@@ -58,14 +64,17 @@ public class RequestProcessor {
 
             if (i < buffer.size() && buffer.get(i).equals("HTTP response:")) {
                 while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    httpResponse.add(buffer.get(i++));
+                    i++;
+//                    httpResponse.append(buffer.get(i++)).append("\n");
+//                    httpResponse.append("body=test");
                 }
-                responseProcessor = new ResponseProcessor(httpResponse);
+//                responseProcessor = new ResponseProcessor(httpResponse);
+                responseProcessor = new ResponseProcessor(new StringBuilder("boody=test"));
             }
 
             if (i < buffer.size() && buffer.get(i).equals("Session:")) {
                 while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    sessionBuffe.add(buffer.get(i++));
+                    sessionBuffe.append(buffer.get(i++)).append("\n");
                 }
                 session = new SessionProcessor(sessionBuffe).parse();
             }
@@ -74,29 +83,31 @@ public class RequestProcessor {
         return new Request(session);
     }
 
-    public void parseRequest(ArrayList<String> request) {
+    public void parseRequest(StringBuilder r) {
 
-        String[] split = request.get(1).split(" ");
+        String[] request = r.toString().split("\n");
+
+        String[] split = request[1].split(" ");
         requestType = split[0];
         url = split[1];
 
-        for (int i = 0; i < request.size(); i++) {
-            if (request.get(i).equals("headers=")) {
+        for (int i = 0; i < request.length; i++) {
+            if (request[i].equals("headers=")) {
                 i++;
-                while (i < request.size()
-                        && !request.get(i).matches("^[a-zA-Z]*=.*")) {
-                    headers.add(request.get(i++));
+                while (i < request.length
+                        && !request[i].matches("^[a-zA-Z]*=.*")) {
+                    headers.append(request[i++]).append("\n");
                 }
             }
-            if (request.get(i).startsWith("stringData")
-                    || request.get(i).startsWith("compositeByteData")) {
+            if (request[i].startsWith("stringData")
+                    || request[i].startsWith("compositeByteData")) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(request.get(i++).replaceAll("(stringData=|compositeByteData=)", ""));
-                while (i < request.size()
-                        && !request.get(i).matches("^[a-zA-Z]*=.*")
+                sb.append(request[i++].replaceAll("(stringData=|compositeByteData=)", ""));
+                while (i < request.length
+                        && !request[i].matches("^[a-zA-Z]*=.*")
                         ) {
 
-                    sb.append(request.get(i++));
+                    sb.append(request[i++]);
 
                 }
                 String requestData = sb.toString().trim();
@@ -140,7 +151,7 @@ public class RequestProcessor {
         return request;
     }
 
-    public ArrayList<String> getHeaders() {
+    public StringBuilder getHeaders() {
         return headers;
     }
 
@@ -152,15 +163,15 @@ public class RequestProcessor {
         return stringBody;
     }
 
-    public ArrayList<String> getHttpRequest() {
+    public StringBuilder getHttpRequest() {
         return httpRequest;
     }
 
-    public ArrayList<String> getHttpResponse() {
+    public StringBuilder getHttpResponse() {
         return httpResponse;
     }
 
-    public ArrayList<String> getSessionBuffe() {
+    public StringBuilder getSessionBuffe() {
         return sessionBuffe;
     }
 }
