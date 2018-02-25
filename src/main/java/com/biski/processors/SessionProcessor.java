@@ -14,7 +14,6 @@ public class SessionProcessor {
     private String userId;
     private String attributes;
     private StringBuilder attributesCsv;
-    private HashMap<String, String> attributesMap;
     private Long startDate;
 
     public SessionProcessor(StringBuilder session) {
@@ -35,6 +34,33 @@ public class SessionProcessor {
          )
          */
 
+        ArrayList<StringBuffer> parameters = splitJsonToTuple();
+
+        scenarioName = parameters.get(0).toString();
+        userId = parameters.get(1).toString();
+        attributes = parameters.get(2).toString();
+        startDate = Long.getLong(parameters.get(3).toString());
+
+        attributesCsv = parseSessionAttrToCsv();
+
+        return new Session(scenarioName, userId, attributes, startDate);
+    }
+
+    private StringBuilder parseSessionAttrToCsv() {
+        StringBuilder attributesCsv = new StringBuilder(100);
+
+        for (String pair : attributes
+                .replace("Map(", "")
+                .replaceFirst(".$", "")
+                .split(", (?![^(]*\\))")) {
+            String[] keyValue = pair.split("->");
+            attributesCsv.append(keyValue[0]).append(",\"").append(keyValue[1]).append("\"\n");
+        }
+
+        return attributesCsv;
+    }
+
+    private ArrayList<StringBuffer> splitJsonToTuple() {
         ArrayList<StringBuffer> parameters = new ArrayList<>(50);
         int i = 0;
         int openBrackets = 0;
@@ -53,29 +79,8 @@ public class SessionProcessor {
                 continue;
             }
             parameters.get(i).append(c);
-
         }
-
-        scenarioName = parameters.get(0).toString();
-        userId = parameters.get(1).toString();
-        attributes = parameters.get(2).toString();
-        startDate = Long.getLong(parameters.get(3).toString());
-
-
-        attributesMap = new HashMap<>();
-        attributesCsv = new StringBuilder(100);
-
-
-        for (String pair : attributes
-                .replace("Map(", "")
-                .replaceFirst(".$", "")
-                .split(", (?![^(]*\\))")) {
-            String[] keyValue = pair.split("->");
-            attributesMap.put(keyValue[0].trim(), keyValue[1].trim());
-            attributesCsv.append(keyValue[0]).append(",\"").append(keyValue[1]).append("\"\n");
-        }
-
-        return new Session(scenarioName, userId, attributes, startDate);
+        return parameters;
     }
 
 
@@ -99,7 +104,5 @@ public class SessionProcessor {
         return startDate;
     }
 
-    public HashMap<String, String> getAttributesMap() {
-        return attributesMap;
-    }
+
 }

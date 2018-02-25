@@ -18,8 +18,9 @@ import java.util.ArrayList;
  * buff.append("<<<<<<<<<<<<<<<<<<<<<<<<<")
  */
 public class RequestProcessor {
-    public static final String BREAK = "=========================";
-    public static int cnt;
+
+    private static final String BREAK = "=========================";
+    private static int cnt;
     private ArrayList<String> buffer;
     private String requestType;
     private String url;
@@ -33,7 +34,7 @@ public class RequestProcessor {
     private StringBuilder headers = new StringBuilder(500);
     private StringBuilder httpRequest = new StringBuilder(5000);
     private StringBuilder httpResponse = new StringBuilder(5000);
-    private StringBuilder sessionBuffe = new StringBuilder(4000);
+    private StringBuilder sessionBuffer = new StringBuilder(4000);
 
 
     public RequestProcessor(ArrayList<String> buff) {
@@ -49,30 +50,44 @@ public class RequestProcessor {
         System.out.println("Parsing request " + cnt++ + ": " + requestName);
 
         for (int i = 0; i < buffer.size(); i++) {
-            if (buffer.get(i).equals("HTTP request:")) {
-                while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    httpRequest.append(buffer.get(i++)).append("\n");
-                }
-                parseRequest(httpRequest);
+            if (i < buffer.size() && buffer.get(i).equals("HTTP request:")) {
+                i = readRequest(i);
             }
 
-
             if (i < buffer.size() && buffer.get(i).equals("HTTP response:")) {
-                while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    httpResponse.append(buffer.get(i++)).append("\n");
-                }
-                responseProcessor = new ResponseProcessor(httpResponse);
+                i = readResponse(i);
             }
 
             if (i < buffer.size() && buffer.get(i).equals("Session:")) {
-                while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    sessionBuffe.append(buffer.get(i++)).append("\n");
-                }
-                session = new SessionProcessor(sessionBuffe).parse();
+                i = readSession(i);
             }
         }
 
         return new Request(session);
+    }
+
+    private int readRequest(int i) {
+        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
+            httpRequest.append(buffer.get(i++)).append("\n");
+        }
+        parseRequest(httpRequest);
+        return i;
+    }
+
+    private int readSession(int i) {
+        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
+            sessionBuffer.append(buffer.get(i++)).append("\n");
+        }
+        session = new SessionProcessor(sessionBuffer).parse();
+        return i;
+    }
+
+    private int readResponse(int i) {
+        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
+            httpResponse.append(buffer.get(i++)).append("\n");
+        }
+        responseProcessor = new ResponseProcessor(httpResponse);
+        return i;
     }
 
     public void parseRequest(StringBuilder r) {
@@ -163,7 +178,7 @@ public class RequestProcessor {
         return httpResponse;
     }
 
-    public StringBuilder getSessionBuffe() {
-        return sessionBuffe;
+    public StringBuilder getSessionBuffer() {
+        return sessionBuffer;
     }
 }
