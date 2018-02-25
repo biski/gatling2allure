@@ -1,6 +1,8 @@
 package com.biski.processors;
 
 
+import com.biski.parser.JsonFormatter;
+
 import java.util.ArrayList;
 
 /**
@@ -11,17 +13,14 @@ public class ResponseProcessor {
     private String responseBody = "";
 
     public ResponseProcessor(StringBuilder fullResponse) {
-//        StringBuilder stringBuilder = new StringBuilder();
-//        fullResponse.forEach(x -> stringBuilder.append(x).append("\n"));
         String[] split = fullResponse.toString().split("body=");
         if (split.length > 1) {
             response = split[0];
-//            responseBody = new JsonFormatter().format(split[1]);
-            responseBody = "";
+            responseBody = new JsonFormatter().format(split[1]);
+//            responseBody = "";
         } else {
             response = fullResponse.toString();
         }
-
     }
 
     public String getResponse() {

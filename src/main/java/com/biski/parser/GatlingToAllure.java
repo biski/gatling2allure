@@ -22,7 +22,7 @@ import static io.qameta.allure.util.ResultsUtils.getThreadName;
  */
 public class GatlingToAllure {
 
-    private List<RequestProcessor> requests;
+    private Deque<RequestProcessor> requests;
     private static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
     private static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
 
@@ -53,7 +53,9 @@ public class GatlingToAllure {
         FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
 
         AtomicInteger requestCnt = new AtomicInteger(0);
-        requests.forEach(createOrUpdateAllureTest(requestCnt, fileSystemResultsWriter));
+        while(!requests.isEmpty()) {
+            createOrUpdateAllureTest(requests.pop(), requestCnt, fileSystemResultsWriter);
+        }
 
 
         fileSystemResultsWriter.write(
@@ -64,8 +66,7 @@ public class GatlingToAllure {
 
     }
 
-    private Consumer<RequestProcessor> createOrUpdateAllureTest(AtomicInteger requestCnt, FileSystemResultsWriter fileSystemResultsWriter) {
-        return (RequestProcessor request) -> {
+    private void createOrUpdateAllureTest(RequestProcessor request, AtomicInteger requestCnt, FileSystemResultsWriter fileSystemResultsWriter) {
 
             System.out.println("Processing request " + requestCnt.getAndIncrement() + "/" + requests.size());
             String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
@@ -119,7 +120,7 @@ public class GatlingToAllure {
             );
 
             if (!request.getSuccessful()) allureTest.setStatus(Status.FAILED);
-        };
+
     }
 
     private Attachment[] getAttachments(FileSystemResultsWriter fileSystemResultsWriter, RequestProcessor request) {
@@ -154,9 +155,9 @@ public class GatlingToAllure {
 
     public void splitLogToRequests() throws IOException {
 
-        requests = new ArrayList<>(1000);
+        requests = new ArrayDeque<>(1000);
 
-        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("/home/wojciech/log-20180220T135351.txt"));
+        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("/home/wojciech/log.txt"));
         ArrayList<String> buff = new ArrayList<>(1000);
         String line;
         Boolean isRequest = false;
@@ -177,7 +178,7 @@ public class GatlingToAllure {
 
     }
 
-    public List<RequestProcessor> getRequests() {
+    public Deque<RequestProcessor> getRequests() {
         return requests;
     }
 }

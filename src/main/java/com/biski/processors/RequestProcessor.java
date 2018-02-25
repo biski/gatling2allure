@@ -25,20 +25,20 @@ import java.util.Collections;
 public class RequestProcessor {
     public static int cnt;
     public static final String BREAK = "=========================";
-    ArrayList<String> buffer;
-    String requestType;
-    String url;
-    String requestName;
-    Boolean isSuccessful;
-    Session session;
-    String stringBody;
-    ResponseProcessor responseProcessor;
-    StringBuilder response = new StringBuilder();
-    StringBuilder request = new StringBuilder();
-    StringBuilder headers = new StringBuilder(500);
-    StringBuilder httpRequest = new StringBuilder(5000);
-    StringBuilder  httpResponse = new StringBuilder(5000);
-    StringBuilder sessionBuffe = new StringBuilder(4000);
+    private ArrayList<String> buffer;
+    private String requestType;
+    private String url;
+    private String requestName;
+    private Boolean isSuccessful;
+    private Session session;
+    private String stringBody;
+    private ResponseProcessor responseProcessor;
+    private StringBuilder response = new StringBuilder();
+    private StringBuilder request = new StringBuilder();
+    private StringBuilder headers = new StringBuilder(500);
+    private StringBuilder httpRequest = new StringBuilder(5000);
+    private StringBuilder  httpResponse = new StringBuilder(5000);
+    private StringBuilder sessionBuffe = new StringBuilder(4000);
 
 
     public RequestProcessor(ArrayList<String> buff) {
@@ -64,12 +64,9 @@ public class RequestProcessor {
 
             if (i < buffer.size() && buffer.get(i).equals("HTTP response:")) {
                 while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-                    i++;
-//                    httpResponse.append(buffer.get(i++)).append("\n");
-//                    httpResponse.append("body=test");
+                    httpResponse.append(buffer.get(i++)).append("\n");
                 }
-//                responseProcessor = new ResponseProcessor(httpResponse);
-                responseProcessor = new ResponseProcessor(new StringBuilder("boody=test"));
+                responseProcessor = new ResponseProcessor(httpResponse);
             }
 
             if (i < buffer.size() && buffer.get(i).equals("Session:")) {
