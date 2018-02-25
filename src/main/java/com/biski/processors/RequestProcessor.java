@@ -4,27 +4,22 @@ import com.biski.objects.Request;
 import com.biski.objects.Session;
 import com.biski.parser.JsonFormatter;
 
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
- *
- *
- *   buff.append(Eol).append(">>>>>>>>>>>>>>>>>>>>>>>>>>").append(Eol)
- buff.append("Request:").append(Eol).append(s"$fullRequestName: $status ${errorMessage.getOrElse("")}").append(Eol)
- buff.append("=========================").append(Eol)
- buff.append("Session:").append(Eol).append(tx.session).append(Eol)
- buff.append("=========================").append(Eol)
- buff.append("HTTP request:").append(Eol).appendRequest(tx.request.ahcRequest, response.nettyRequest, configuration.core.charset)
- buff.append("=========================").append(Eol)
- buff.append("HTTP response:").append(Eol).appendResponse(response).append(Eol)
- buff.append("<<<<<<<<<<<<<<<<<<<<<<<<<")
+ * buff.append(Eol).append(">>>>>>>>>>>>>>>>>>>>>>>>>>").append(Eol)
+ * buff.append("Request:").append(Eol).append(s"$fullRequestName: $status ${errorMessage.getOrElse("")}").append(Eol)
+ * buff.append("=========================").append(Eol)
+ * buff.append("Session:").append(Eol).append(tx.session).append(Eol)
+ * buff.append("=========================").append(Eol)
+ * buff.append("HTTP request:").append(Eol).appendRequest(tx.request.ahcRequest, response.nettyRequest, configuration.core.charset)
+ * buff.append("=========================").append(Eol)
+ * buff.append("HTTP response:").append(Eol).appendResponse(response).append(Eol)
+ * buff.append("<<<<<<<<<<<<<<<<<<<<<<<<<")
  */
 public class RequestProcessor {
-    public static int cnt;
     public static final String BREAK = "=========================";
+    public static int cnt;
     private ArrayList<String> buffer;
     private String requestType;
     private String url;
@@ -37,7 +32,7 @@ public class RequestProcessor {
     private StringBuilder request = new StringBuilder();
     private StringBuilder headers = new StringBuilder(500);
     private StringBuilder httpRequest = new StringBuilder(5000);
-    private StringBuilder  httpResponse = new StringBuilder(5000);
+    private StringBuilder httpResponse = new StringBuilder(5000);
     private StringBuilder sessionBuffe = new StringBuilder(4000);
 
 
@@ -54,7 +49,7 @@ public class RequestProcessor {
         System.out.println("Parsing request " + cnt++ + ": " + requestName);
 
         for (int i = 0; i < buffer.size(); i++) {
-            if(buffer.get(i).equals("HTTP request:")) {
+            if (buffer.get(i).equals("HTTP request:")) {
                 while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
                     httpRequest.append(buffer.get(i++)).append("\n");
                 }
@@ -108,7 +103,7 @@ public class RequestProcessor {
 
                 }
                 String requestData = sb.toString().trim();
-                if(!requestData.equals("")) {
+                if (!requestData.equals("")) {
                     stringBody = new JsonFormatter().format(requestData);
                 }
             }

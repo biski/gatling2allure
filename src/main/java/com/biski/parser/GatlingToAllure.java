@@ -1,17 +1,19 @@
 package com.biski.parser;
 
-import io.qameta.allure.*;
-import io.qameta.allure.model.*;
-import io.qameta.allure.model.Attachment;
-import io.qameta.allure.util.ResultsUtils;
 import com.biski.processors.RequestProcessor;
+import io.qameta.allure.FileSystemResultsWriter;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.model.*;
+import io.qameta.allure.util.ResultsUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static io.qameta.allure.util.ResultsUtils.getHostName;
@@ -22,38 +24,25 @@ import static io.qameta.allure.util.ResultsUtils.getThreadName;
  */
 public class GatlingToAllure {
 
-    private Deque<RequestProcessor> requests;
     private static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
     private static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
-
     private static final String ALLURE_RESULTS_DIR = "allure-results";
+    private Deque<RequestProcessor> requests;
     private HashMap<String, TestResult> simulations = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
         GatlingToAllure gatlingToAllure = new GatlingToAllure();
         gatlingToAllure.splitLogToRequests();
-//        gatlingToAllure.debug();
         gatlingToAllure.generateAllureData();
     }
 
-//    private void debug() {
-//        requests.forEach(
-//                request -> {
-//                    System.out.println(request.getSuccessful() + " " + request.getRequestName() + " " + request.getSession().getScenarioName() + " " + request.getUrl())
-//                }
-//        );
-//    }
-
     private void generateAllureData() {
         File resultsFolder = new File(ALLURE_RESULTS_DIR);
-        if (resultsFolder.exists()) {
-            resultsFolder.delete();
-        }
 
         FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
 
         AtomicInteger requestCnt = new AtomicInteger(0);
-        while(!requests.isEmpty()) {
+        while (!requests.isEmpty()) {
             createOrUpdateAllureTest(requests.pop(), requestCnt, fileSystemResultsWriter);
         }
 
@@ -68,58 +57,55 @@ public class GatlingToAllure {
 
     private void createOrUpdateAllureTest(RequestProcessor request, AtomicInteger requestCnt, FileSystemResultsWriter fileSystemResultsWriter) {
 
-            System.out.println("Processing request " + requestCnt.getAndIncrement() + "/" + requests.size());
-            String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
+        System.out.println("Processing request " + requestCnt.getAndIncrement() + "/" + requests.size());
+        String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
 
-            TestResult allureTest = simulations.computeIfAbsent(simulationName, k -> {
+        TestResult allureTest = simulations.computeIfAbsent(simulationName, k -> {
 
-                final List<Label> labels = new ArrayList<>(12);
-                labels.addAll(Arrays.asList(
-                        //Packages grouping
-                        new Label().withName("package").withValue("example package"),
-                        new Label().withName("testClass").withValue("example test class"),
-                        new Label().withName("testMethod").withValue("example test method"),
+            final List<Label> labels = new ArrayList<>(12);
+            labels.addAll(Arrays.asList(
+                    //Packages grouping
+                    new Label().withName("package").withValue("example package"),
+                    new Label().withName("testClass").withValue("example test class"),
+                    new Label().withName("testMethod").withValue("example test method"),
 
-                        //xUnit grouping
-                        new Label().withName("parentSuite").withValue("parent suite"),
-                        new Label().withName("suite").withValue("suite name"),
-                        new Label().withName("subSuite").withValue("sub suite"),
+                    //xUnit grouping
+                    new Label().withName("parentSuite").withValue("parent suite"),
+                    new Label().withName("suite").withValue("suite name"),
+                    new Label().withName("subSuite").withValue("sub suite"),
 
-                        //Timeline grouping
-                        new Label().withName("host").withValue(getHostName()),
-                        new Label().withName("thread").withValue(getThreadName()),
-                        new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
-                        new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
-                        new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
-                        new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value())
-                ));
+                    //Timeline grouping
+                    new Label().withName("host").withValue(getHostName()),
+                    new Label().withName("thread").withValue(getThreadName()),
+                    new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
+                    new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
+                    new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
+                    new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value())
+            ));
 
-                return new TestResult()
-                        .withName(simulationName)
-                        .withUuid(UUID.randomUUID().toString())
+            return new TestResult()
+                    .withName(simulationName)
+                    .withUuid(UUID.randomUUID().toString())
+                    .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                    .withLabels(labels);
+        });
+
+        allureTest.getLabels().add(new Label()
+                .withName(ResultsUtils.FEATURE_LABEL_NAME)
+                .withValue(request.getRequestName()));
+
+        allureTest.getSteps().add(
+                new StepResult()
+                        .withName(request.getRequestType() + " " + request.getRequestName())
+                        .withAttachments(
+                                getAttachments(fileSystemResultsWriter, request)
+                        )
                         .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                        .withLabels(labels);
-            });
-//                    .withStart(request.getSession().getStartDate())
-//                    .withStop(request.getSession().getStartDate()+50));
+                        .withStart(request.getSession().getStartDate())
 
+        );
 
-            allureTest.getLabels().add(new Label()
-                    .withName(ResultsUtils.FEATURE_LABEL_NAME)
-                    .withValue(request.getRequestName()));
-
-            allureTest.getSteps().add(
-                    new StepResult()
-                            .withName(request.getRequestType() + " " + request.getRequestName())
-                            .withAttachments(
-                                    getAttachments(fileSystemResultsWriter, request)
-                            )
-                            .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                            .withStart(request.getSession().getStartDate())
-
-            );
-
-            if (!request.getSuccessful()) allureTest.setStatus(Status.FAILED);
+        if (!request.getSuccessful()) allureTest.setStatus(Status.FAILED);
 
     }
 
@@ -175,10 +161,5 @@ public class GatlingToAllure {
                 buff.add(line);
             }
         }
-
-    }
-
-    public Deque<RequestProcessor> getRequests() {
-        return requests;
     }
 }

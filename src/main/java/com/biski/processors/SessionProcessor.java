@@ -4,7 +4,6 @@ import com.biski.objects.Session;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by wojciech on 13.01.18.
@@ -44,7 +43,6 @@ public class SessionProcessor {
                 .replace("Session:\nSession(", "")
                 .replaceFirst("\\)$", "")
                 .toCharArray()) {
-//            //System.out.println(c);
             if (c == '(') openBrackets++;
             if (c == ')') {
                 openBrackets--;
@@ -74,7 +72,7 @@ public class SessionProcessor {
                 .split(", (?![^(]*\\))")) {
             String[] keyValue = pair.split("->");
             attributesMap.put(keyValue[0].trim(), keyValue[1].trim());
-            attributesCsv.append(keyValue[0]) .append( ",\"").append(keyValue[1]).append("\"\n");
+            attributesCsv.append(keyValue[0]).append(",\"").append(keyValue[1]).append("\"\n");
         }
 
         return new Session(scenarioName, userId, attributes, startDate);

@@ -26,6 +26,19 @@ public class AllureTest {
         this.testName = testName;
     }
 
+    public static void main(String[] args) {
+
+
+        AllureTest allureTest = new AllureTest("x");
+        allureTest.onStart();
+//        allureTest.addSteps("step 1");
+//        allureTest.addSteps(" step 2");
+
+        allureTest.onSuccess();
+
+
+    }
+
     public void onStart() {
         final TestResultContainer result = new TestResultContainer()
                 .withUuid(testResultContainerUuid)
@@ -60,7 +73,6 @@ public class AllureTest {
         return result -> result.withStatus(status);
     }
 
-
     private Consumer<TestResult> setStatus(final Status status, final StatusDetails details) {
         return result -> {
             result.setStatus(status);
@@ -78,37 +90,23 @@ public class AllureTest {
                 .withName(stepName)
                 .withDescriptionHtml("<b>" + stepName + "</b>");
         getLifecycle().startStep(stepUuid, result);
-        getLifecycle().updateStep(stepUuid, s -> { if (isSuccess) s.withStatus(Status.PASSED); else s.withStatus(Status.FAILED); });
+        getLifecycle().updateStep(stepUuid, s -> {
+            if (isSuccess) s.withStatus(Status.PASSED);
+            else s.withStatus(Status.FAILED);
+        });
         getLifecycle().updateStep(stepUuid, s -> s.setStart(123154l));
-//        getLifecycle().updateStep("yyy", s -> s.withAttachments(new Attachment().withName("request body").withSource("xx")));
-
     }
 
     public void addAttachment(String name, String body) {
         getLifecycle().addAttachment(name, "application/json", "json", body.getBytes(StandardCharsets.UTF_8));
-
     }
+
     public void addAttachmentCsv(String name, String body) {
         getLifecycle().addAttachment(name, "text/csv", "csv", body.getBytes(StandardCharsets.UTF_8));
-
     }
 
     public void stopStep() {
         getLifecycle().stopStep();
-
-    }
-
-    public static void main(String[] args) {
-
-
-        AllureTest allureTest = new AllureTest("x");
-        allureTest.onStart();
-//        allureTest.addSteps("step 1");
-//        allureTest.addSteps(" step 2");
-
-        allureTest.onSuccess();
-
-
     }
 
     public String getTestName() {
