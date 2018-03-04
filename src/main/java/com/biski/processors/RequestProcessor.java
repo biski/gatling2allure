@@ -5,6 +5,7 @@ import com.biski.objects.Session;
 import com.biski.parser.JsonFormatter;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * buff.append(Eol).append(">>>>>>>>>>>>>>>>>>>>>>>>>>").append(Eol)
@@ -26,16 +27,14 @@ public class RequestProcessor {
     private String url;
     private String requestName;
     private Boolean isSuccessful;
+    private String failureMessage;
     private Session session;
     private String stringBody;
     private ResponseProcessor responseProcessor;
-    private StringBuilder response = new StringBuilder();
-    private StringBuilder request = new StringBuilder();
     private StringBuilder headers = new StringBuilder(500);
     private StringBuilder httpRequest = new StringBuilder(5000);
-    private StringBuilder httpResponse = new StringBuilder(5000);
     private StringBuilder sessionBuffer = new StringBuilder(4000);
-
+    private StringBuilder httpResponse = new StringBuilder(5000);
 
     public RequestProcessor(ArrayList<String> buff) {
         this.buffer = buff;
@@ -43,9 +42,17 @@ public class RequestProcessor {
         parseRequest();
     }
 
+    public StringBuilder getHeaders() {
+        return headers;
+    }
+
     private Request parseRequest() {
         requestName = buffer.get(1).split(":")[0];
         isSuccessful = buffer.get(1).split(":")[1].trim().equals("OK");
+
+        if (!isSuccessful) {
+            failureMessage = Optional.of(buffer.get(1).split("KO")[1]).orElse("");
+        }
 
         System.out.println("Parsing request " + cnt++ + ": " + requestName);
 
@@ -98,6 +105,7 @@ public class RequestProcessor {
         requestType = split[0];
         url = split[1];
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < request.length; i++) {
             if (request[i].equals("headers=")) {
                 i++;
@@ -107,9 +115,9 @@ public class RequestProcessor {
                 }
             }
             if (i < request.length
-                && (request[i].startsWith("stringData")
+                    && (request[i].startsWith("stringData")
                     || request[i].startsWith("compositeByteData"))) {
-                StringBuilder sb = new StringBuilder();
+
                 sb.append(request[i++].replaceAll("(stringData=|compositeByteData=)", ""));
                 while (i < request.length
                         && !request[i].matches("^[a-zA-Z]*=.*")
@@ -122,12 +130,9 @@ public class RequestProcessor {
                 if (!requestData.equals("")) {
                     stringBody = new JsonFormatter().format(requestData);
                 }
+                sb.setLength(0);
             }
         }
-    }
-
-    public ArrayList<String> getBuffer() {
-        return buffer;
     }
 
     public String getRequestType() {
@@ -146,21 +151,8 @@ public class RequestProcessor {
         return session;
     }
 
-
     public ResponseProcessor getResponseProcessor() {
         return responseProcessor;
-    }
-
-    public StringBuilder getResponse() {
-        return response;
-    }
-
-    public StringBuilder getRequest() {
-        return request;
-    }
-
-    public StringBuilder getHeaders() {
-        return headers;
     }
 
     public String getUrl() {
@@ -171,15 +163,12 @@ public class RequestProcessor {
         return stringBody;
     }
 
-    public StringBuilder getHttpRequest() {
-        return httpRequest;
-    }
-
-    public StringBuilder getHttpResponse() {
-        return httpResponse;
-    }
 
     public StringBuilder getSessionBuffer() {
         return sessionBuffer;
+    }
+
+    public String getFailureMessage() {
+        return failureMessage;
     }
 }

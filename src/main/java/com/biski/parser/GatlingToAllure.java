@@ -100,6 +100,7 @@ public class GatlingToAllure {
                     .withName(simulationName)
                     .withUuid(UUID.randomUUID().toString())
                     .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                    .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
                     .withLabels(labels);
         });
 
@@ -114,11 +115,17 @@ public class GatlingToAllure {
                                 getAttachments(fileSystemResultsWriter, request)
                         )
                         .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                        .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
                         .withStart(request.getSession().getStartDate())
 
         );
 
-        if (!request.getSuccessful()) allureTest.setStatus(Status.FAILED);
+        if (!request.getSuccessful()) {
+            allureTest.setStatus(Status.FAILED);
+            StatusDetails statusDetails = allureTest.getStatusDetails();
+            statusDetails.setMessage(request.getFailureMessage());
+
+        }
 
     }
 
@@ -129,6 +136,7 @@ public class GatlingToAllure {
         if (request.getRequestType().equals("POST")) {
             attachments.add(createAttachment("String body", "application/json", request.getStringBody(), fileSystemResultsWriter));
         }
+        attachments.add(createAttachment("Headers", "text/plain", request.getHeaders().toString(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffer().toString(), fileSystemResultsWriter));
         attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
