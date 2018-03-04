@@ -1,6 +1,7 @@
 package com.biski.parser;
 
 import com.biski.processors.RequestProcessor;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import io.qameta.allure.FileSystemResultsWriter;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.model.*;
@@ -11,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,8 +33,19 @@ public class GatlingToAllure {
     private HashMap<String, TestResult> simulations = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
+        if(args.length == 0) {
+            System.out.println("Put path to log file as argument.");
+            System.exit(-1);
+        }
+
+        Path path = Paths.get(args[0]);
+        if(Files.notExists(path)) {
+            System.out.println("File not found!");
+            System.exit(-1);
+        }
+
         GatlingToAllure gatlingToAllure = new GatlingToAllure();
-        gatlingToAllure.splitLogToRequests();
+        gatlingToAllure.splitLogToRequests(path);
         gatlingToAllure.generateAllureData();
     }
 
@@ -139,11 +152,11 @@ public class GatlingToAllure {
                 .withType(attachmentType);
     }
 
-    public void splitLogToRequests() throws IOException {
+    public void splitLogToRequests(Path path) throws IOException {
 
         requests = new ArrayDeque<>(1000);
 
-        BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("/home/wojciech/log.txt"));
+        BufferedReader bufferedReader = Files.newBufferedReader(path);
         ArrayList<String> buff = new ArrayList<>(1000);
         String line;
         Boolean isRequest = false;
