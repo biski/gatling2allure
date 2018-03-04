@@ -106,8 +106,9 @@ public class RequestProcessor {
                     headers.append(request[i++]).append("\n");
                 }
             }
-            if (request[i].startsWith("stringData")
-                    || request[i].startsWith("compositeByteData")) {
+            if (i < request.length
+                && (request[i].startsWith("stringData")
+                    || request[i].startsWith("compositeByteData"))) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(request[i++].replaceAll("(stringData=|compositeByteData=)", ""));
                 while (i < request.length
