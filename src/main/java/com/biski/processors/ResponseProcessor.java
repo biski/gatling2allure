@@ -14,7 +14,7 @@ public class ResponseProcessor {
         String[] split = fullResponse.toString().split("body=");
         if (split.length > 1) {
             response = split[0];
-            if(response.contains("text/json")) {
+            if(response.contains("application/json")) {
                 responseBody = new JsonFormatter().format(split[1]);
             } else {
                 responseBody = split[1];
