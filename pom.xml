@@ -5,11 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wojtek</groupId>
-    <artifactId>allure-gatling</artifactId>
+    <artifactId>gatling2allure</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+
+    <name>Gatling to Allure converter</name>
+    <description>Convert yours Gatling logs to Allure report</description>
+
+    <developers>
+        <developer>
+            <name>Wojciech Biskowski</name>
+            <email>wbiskowski[at]gmail.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <main.class>com.biski.parser.GatlingToAllure</main.class>
+        <allure-java-commons.version>2.0-BETA19</allure-java-commons.version>
     </properties>
 
     <build>
@@ -50,11 +63,10 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-java-commons</artifactId>
-            <version>2.0-BETA19</version>
+            <version>${allure-java-commons.version}</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -67,7 +79,6 @@
             <version>6.11</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 </project>
