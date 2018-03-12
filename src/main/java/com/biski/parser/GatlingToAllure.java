@@ -139,8 +139,10 @@ public class GatlingToAllure {
         attachments.add(createAttachment("Headers", "text/plain", request.getHeaders().toString(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
         attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffer().toString(), fileSystemResultsWriter));
-        attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
-        attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
+        if(request.getResponseProcessor() != null) {
+            attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
+            attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
+        }
 
         Attachment[] attachmentsArr = new Attachment[attachments.size()];
         return attachments.toArray(attachmentsArr);

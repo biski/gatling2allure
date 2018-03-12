@@ -20,8 +20,11 @@ import java.util.Optional;
  */
 public class RequestProcessor {
 
+    private static final Boolean skipSuccessResponseBody = false;
     private static final String BREAK = "=========================";
     private static int cnt;
+
+
     private ArrayList<String> buffer;
     private String requestType;
     private String url;
@@ -62,7 +65,11 @@ public class RequestProcessor {
             }
 
             if (i < buffer.size() && buffer.get(i).equals("HTTP response:")) {
-                i = readResponse(i);
+                if(skipSuccessResponseBody && isSuccessful) {
+                    i++;
+                } else {
+                    i = readResponse(i);
+                }
             }
 
             if (i < buffer.size() && buffer.get(i).equals("Session:")) {
