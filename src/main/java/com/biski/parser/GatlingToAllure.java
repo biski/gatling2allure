@@ -1,9 +1,7 @@
 package com.biski.parser;
 
 import com.biski.processors.RequestProcessor;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import io.qameta.allure.FileSystemResultsWriter;
-import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.model.*;
 import io.qameta.allure.util.ResultsUtils;
 
@@ -15,8 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 import static io.qameta.allure.util.ResultsUtils.getHostName;
 import static io.qameta.allure.util.ResultsUtils.getThreadName;
@@ -26,135 +23,138 @@ import static io.qameta.allure.util.ResultsUtils.getThreadName;
  */
 public class GatlingToAllure {
 
+    private static final String RESULTS_POSTFIX = "-result.json";
     private static final String REQUEST_START = ">>>>>>>>>>>>>>>>>>>>>>>>>>";
     private static final String REQUEST_END = "<<<<<<<<<<<<<<<<<<<<<<<<<";
     private static final String ALLURE_RESULTS_DIR = "allure-results";
-    private Deque<RequestProcessor> requests;
-    private HashMap<String, TestResult> simulations = new HashMap<>();
+    private static final String TEXT_PLAIN = "text/plain";
+    private static final String APPLICATION_JSON = "application/json";
+    private HashMap<String, String> createdTestResults = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
-        if(args.length == 0) {
+        if (args.length == 0) {
             System.out.println("Put path to log file as argument.");
             System.exit(-1);
         }
 
         Path path = Paths.get(args[0]);
-        if(Files.notExists(path)) {
+        if (Files.notExists(path)) {
             System.out.println("File not found!");
             System.exit(-1);
         }
 
         GatlingToAllure gatlingToAllure = new GatlingToAllure();
-        gatlingToAllure.splitLogToRequests(path);
-        gatlingToAllure.generateAllureData();
+        gatlingToAllure.convert(path);
     }
 
-    private void generateAllureData() {
-        File resultsFolder = new File(ALLURE_RESULTS_DIR);
+    private void convert(Path path) throws IOException {
 
-        FileSystemResultsWriter fileSystemResultsWriter = new FileSystemResultsWriter(resultsFolder.toPath());
+        BufferedReader bufferedReader = Files.newBufferedReader(path);
 
-        AtomicInteger requestCnt = new AtomicInteger(0);
-        while (!requests.isEmpty()) {
-            createOrUpdateAllureTest(requests.pop(), requestCnt, fileSystemResultsWriter);
+        ArrayList<String> buff = new ArrayList<>(500);
+        String line;
+        Boolean isRequest = false;
+        int i = 0;
+        while ((line = bufferedReader.readLine()) != null) {
+            switch (line) {
+                case REQUEST_START:
+                    isRequest = true;
+                    break;
+                case REQUEST_END:
+                    isRequest = false;
+                    createOrUpdateAllureTest(new RequestProcessor(buff), i++);
+                    buff.clear();
+                    break;
+                default:
+                    if (isRequest) buff.add(line);
+            }
+
         }
-
-
-        fileSystemResultsWriter.write(
-                new TestResultContainer()
-                        .withChildren(simulations.values().stream().map(TestResult::getUuid).collect(Collectors.toList())));
-
-        simulations.values().forEach(fileSystemResultsWriter::write);
-
     }
 
-    private void createOrUpdateAllureTest(RequestProcessor request, AtomicInteger requestCnt, FileSystemResultsWriter fileSystemResultsWriter) {
+    private void createOrUpdateAllureTest(RequestProcessor request, int i) {
 
-        System.out.println("Processing request " + requestCnt.getAndIncrement() + "/" + requests.size());
-        String simulationName = request.getSession().getScenarioName() + request.getSession().getUserId();
+        System.out.println("Processing request " + i);
+        String simulationName = request.getSession().getScenarioName() + " [" + request.getSession().getUserId() + "]";
+        FileSystemResultsWriter writer = new FileSystemResultsWriter(new File(ALLURE_RESULTS_DIR).toPath());
 
-        TestResult allureTest = simulations.computeIfAbsent(simulationName, k -> {
+        String uuid = createdTestResults.computeIfAbsent(simulationName, createNewTestResult(request, simulationName, writer));
+        updateTestResult(request, writer, uuid);
+    }
 
-            final List<Label> labels = new ArrayList<>(12);
-            labels.addAll(Arrays.asList(
-                    //Packages grouping
-                    new Label().withName("package").withValue("example package"),
-                    new Label().withName("testClass").withValue("example test class"),
-                    new Label().withName("testMethod").withValue("example test method"),
+    private void updateTestResult(RequestProcessor request, FileSystemResultsWriter writer, String uuid) {
+        try {
+            Path path = new File(ALLURE_RESULTS_DIR + "/" + uuid + RESULTS_POSTFIX).toPath();
+            TestResult testResult = readTestResultFromFile(path);
 
-                    //xUnit grouping
-                    new Label().withName("parentSuite").withValue("parent suite"),
-                    new Label().withName("suite").withValue("suite name"),
-                    new Label().withName("subSuite").withValue("sub suite"),
+            testResult.getLabels().add(new Label()
+                    .withName(ResultsUtils.FEATURE_LABEL_NAME)
+                    .withValue(request.getRequestName()));
 
-                    //Timeline grouping
-                    new Label().withName("host").withValue(getHostName()),
-                    new Label().withName("thread").withValue(getThreadName()),
-                    new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
-                    new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
-                    new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
-                    new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value())
-            ));
+            testResult.getSteps().add(
+                    new StepResult()
+                            .withName(request.getRequestType() + " " + request.getRequestName())
+                            .withAttachments(
+                                    getAttachments(writer, request)
+                            )
+                            .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                            .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
+                            .withStart(request.getSession().getStartDate())
 
-            return new TestResult()
-                    .withName(simulationName)
-                    .withUuid(UUID.randomUUID().toString())
-                    .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                    .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
-                    .withLabels(labels);
-        });
+            );
 
-        allureTest.getLabels().add(new Label()
-                .withName(ResultsUtils.FEATURE_LABEL_NAME)
-                .withValue(request.getRequestName()));
+            if (!request.getSuccessful()) {
+                testResult.setStatus(Status.FAILED);
+                StatusDetails statusDetails = testResult.getStatusDetails();
+                statusDetails.setMessage(request.getFailureMessage());
 
-        allureTest.getSteps().add(
-                new StepResult()
-                        .withName(request.getRequestType() + " " + request.getRequestName())
-                        .withAttachments(
-                                getAttachments(fileSystemResultsWriter, request)
-                        )
-                        .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                        .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
-                        .withStart(request.getSession().getStartDate())
+            }
+            updateTestResultFile(writer, path, testResult);
 
-        );
-
-        if (!request.getSuccessful()) {
-            allureTest.setStatus(Status.FAILED);
-            StatusDetails statusDetails = allureTest.getStatusDetails();
-            statusDetails.setMessage(request.getFailureMessage());
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+    }
 
+    private void updateTestResultFile(FileSystemResultsWriter writer, Path path, TestResult testResult) throws IOException {
+        Files.delete(path);
+        writer.write(testResult);
+    }
+
+    private TestResult readTestResultFromFile(Path path) throws IOException {
+        return Allure2ModelJackson
+                .createMapper()
+                .readValue(
+                        Files.newInputStream(path),
+                        TestResult.class);
     }
 
     private Attachment[] getAttachments(FileSystemResultsWriter fileSystemResultsWriter, RequestProcessor request) {
         ArrayList<Attachment> attachments = new ArrayList<>(10);
-        attachments.add(createAttachment("Request", "text/plain", request.getRequestType() + " " + request.getUrl(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Request", TEXT_PLAIN, request.getRequestType() + " " + request.getUrl(), fileSystemResultsWriter));
 
         if (request.getRequestType().equals("POST")) {
-            attachments.add(createAttachment("String body", "application/json", request.getStringBody(), fileSystemResultsWriter));
+            attachments.add(createAttachment("String body", APPLICATION_JSON, request.getStringBody(), fileSystemResultsWriter));
         }
-        attachments.add(createAttachment("Headers", "text/plain", request.getHeaders().toString(), fileSystemResultsWriter));
-        attachments.add(createAttachment("Session", "application/json", request.getSession().getAttributes(), fileSystemResultsWriter));
-        attachments.add(createAttachment("Session buffer", "application/json", request.getSessionBuffer().toString(), fileSystemResultsWriter));
-        if(request.getResponseProcessor() != null) {
-            attachments.add(createAttachment("Response", "application/json", request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
-            attachments.add(createAttachment("Response body", "application/json", request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Headers", TEXT_PLAIN, request.getHeaders().toString(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Session", APPLICATION_JSON, request.getSession().getAttributes(), fileSystemResultsWriter));
+        attachments.add(createAttachment("Session buffer", APPLICATION_JSON, request.getSessionBuffer().toString(), fileSystemResultsWriter));
+        if (request.getResponseProcessor() != null) {
+            attachments.add(createAttachment("Response", APPLICATION_JSON, request.getResponseProcessor().getResponse(), fileSystemResultsWriter));
+            attachments.add(createAttachment("Response body", APPLICATION_JSON, request.getResponseProcessor().getResponseBody(), fileSystemResultsWriter));
         }
 
         Attachment[] attachmentsArr = new Attachment[attachments.size()];
         return attachments.toArray(attachmentsArr);
     }
 
-    public Attachment createAttachment(String attachmentName, String attachmentType, String body, FileSystemResultsWriter fileSystemResultsWriter) {
+    private Attachment createAttachment(String attachmentName, String attachmentType, String body, FileSystemResultsWriter fileSystemResultsWriter) {
 
-        if (body == null) body = " ";
+        String attachmentBody = Optional.ofNullable(body).orElse(" ");
 
         String attachmentUid = UUID.randomUUID().toString();
 
-        fileSystemResultsWriter.write(attachmentUid, new ByteArrayInputStream(body.getBytes()));
+        fileSystemResultsWriter.write(attachmentUid, new ByteArrayInputStream(attachmentBody.getBytes()));
 
 
         return new Attachment().withName(attachmentName)
@@ -162,27 +162,40 @@ public class GatlingToAllure {
                 .withType(attachmentType);
     }
 
-    public void splitLogToRequests(Path path) throws IOException {
+    private Function<String, String> createNewTestResult(RequestProcessor request, String simulationName, FileSystemResultsWriter writer) {
+        return k -> {
 
-        requests = new ArrayDeque<>(1000);
+            final List<Label> labels = new ArrayList<>(12);
+            labels.addAll(Arrays.asList(
+                    //Packages grouping
+//                    new Label().withName("package").withValue("example package"),
+//                    new Label().withName("testClass").withValue("example test class"),
+//                    new Label().withName("testMethod").withValue("example test method"),
 
-        BufferedReader bufferedReader = Files.newBufferedReader(path);
-        ArrayList<String> buff = new ArrayList<>(1000);
-        String line;
-        Boolean isRequest = false;
-        while ((line = bufferedReader.readLine()) != null) {
-            if (line.equals(REQUEST_START)) {
-                isRequest = true;
-                continue;
-            } else if (line.equals(REQUEST_END)) {
-                isRequest = false;
-                requests.add(new RequestProcessor(buff));
-                buff.clear();
-                continue;
-            }
-            if (isRequest) {
-                buff.add(line);
-            }
-        }
+                    //xUnit grouping
+//                    new Label().withName("parentSuite").withValue("parent suite"),
+                    new Label().withName("suite").withValue("Gatling tests"),
+//                    new Label().withName("subSuite").withValue("sub suite"),
+
+                    //Timeline grouping
+                    new Label().withName("host").withValue(getHostName()),
+                    new Label().withName("thread").withValue(getThreadName())
+//                    new Label().withName(ResultsUtils.EPIC_LABEL_NAME).withValue("Requests"),
+//                    new Label().withName(ResultsUtils.OWNER_LABEL_NAME).withValue("OWNER LABEL NAME"),
+//                    new Label().withName(ResultsUtils.TAG_LABEL_NAME).withValue("TAG LABEL NAME"),
+//                    new Label().withName(ResultsUtils.SEVERITY_LABEL_NAME).withValue(SeverityLevel.BLOCKER.value())
+            ));
+
+            String newUuid = UUID.randomUUID().toString();
+            TestResult testResult = new TestResult()
+                    .withName(simulationName)
+                    .withUuid(newUuid)
+                    .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                    .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
+                    .withLabels(labels);
+
+            writer.write(testResult);
+            return newUuid;
+        };
     }
 }
