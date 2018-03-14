@@ -1,0 +1,36 @@
+Request:
+simple failed request: KO jsonPath($.xxx).find.is(yyy), but actually found uuu
+=========================
+Session:
+Session(Simple Scenario,5,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@742d15d, e2481e72-7047-4cb9-ab74-55fcd895f58f -> 0, userId -> 12345),1515679172494,0,OK,List(TryMaxBlock(e2481e72-7047-4cb9-ab74-55fcd895f58f,io.gatling.core.action.InnerTryMax@7fd90b80,KO)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$463/440472115@62a30f14)
+=========================
+HTTP request:
+POST http://127.0.0.1:1000/create
+headers=
+Header-1: header1value
+Content-Type: application/json
+Accept: */*
+stringData=
+ {
+         "username": "john",
+         "age": 20,
+         "email": "john@lenon.com"
+
+ }
+
+realm=Realm{principal='api', scheme=BASIC, realmName='null', nonce='null', algorithm='null', response='null', qop='null', nc='00000001', cnonce='null', uri='null', methodName='GET', useAbsoluteURI='false', omitQuery='false'}
+=========================
+HTTP response:
+status=
+200 OK
+headers=
+Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id, Tum-User
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Origin: *
+API-Version: 1
+Content-Type: application/json; charset=utf-8
+Processing-Time: 200
+Content-Length: 19
+
+body=
+{"userId":"213214"}

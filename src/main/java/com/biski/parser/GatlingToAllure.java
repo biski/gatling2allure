@@ -47,7 +47,7 @@ public class GatlingToAllure {
         gatlingToAllure.convert(path);
     }
 
-    private void convert(Path path) throws IOException {
+    public void convert(Path path) throws IOException {
 
         BufferedReader bufferedReader = Files.newBufferedReader(path);
 

@@ -22,6 +22,9 @@ public class RequestProcessor {
 
     private static final Boolean skipSuccessResponseBody = false;
     private static final String BREAK = "=========================";
+    public static final String NEW_LINE = "\n";
+    public static final String PASSED = "OK";
+    public static final String FAILURE = "KO";
     private static int cnt;
 
 
@@ -47,10 +50,10 @@ public class RequestProcessor {
 
     private Request parseRequest() {
         requestName = buffer.get(1).split(":")[0];
-        isSuccessful = buffer.get(1).split(":")[1].trim().equals("OK");
+        isSuccessful = buffer.get(1).split(":")[1].trim().equals(PASSED);
 
         if (!isSuccessful) {
-            failureMessage = Optional.of(buffer.get(1).split("KO")[1]).orElse("");
+            failureMessage = Optional.of(buffer.get(1).split(FAILURE)[1].trim()).orElse("");
         }
 
         System.out.println("Parsing request " + cnt++ + ": " + requestName);
@@ -78,7 +81,7 @@ public class RequestProcessor {
 
     private int readRequest(int i) {
         while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-            httpRequest.append(buffer.get(i++)).append("\n");
+            httpRequest.append(buffer.get(i++)).append(NEW_LINE);
         }
         parseRequest(httpRequest);
         return i;
@@ -86,7 +89,7 @@ public class RequestProcessor {
 
     public void parseRequest(StringBuilder r) {
 
-        String[] request = r.toString().split("\n");
+        String[] request = r.toString().split(NEW_LINE);
 
         String[] split = request[1].split(" ");
         requestType = split[0];
@@ -98,7 +101,7 @@ public class RequestProcessor {
                 i++;
                 while (i < request.length
                         && !request[i].matches("^[a-zA-Z]*=.*")) {
-                    headers.append(request[i++]).append("\n");
+                    headers.append(request[i++]).append(NEW_LINE);
                 }
             }
             if (i < request.length
@@ -124,7 +127,7 @@ public class RequestProcessor {
 
     private int readSession(int i) {
         while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-            sessionBuffer.append(buffer.get(i++)).append("\n");
+            sessionBuffer.append(buffer.get(i++)).append(NEW_LINE);
         }
         session = new SessionProcessor(sessionBuffer).parse();
         return i;
@@ -132,7 +135,7 @@ public class RequestProcessor {
 
     private int readResponse(int i) {
         while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-            httpResponse.append(buffer.get(i++)).append("\n");
+            httpResponse.append(buffer.get(i++)).append(NEW_LINE);
         }
         responseProcessor = new ResponseProcessor(httpResponse);
         return i;
