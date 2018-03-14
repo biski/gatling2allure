@@ -58,15 +58,15 @@ public class AllureTest {
         getLifecycle().startTestCase(testResultContainerUuid);
     }
 
+    public AllureLifecycle getLifecycle() {
+        return lifecycle;
+    }
+
     public void onSuccess() {
 
         getLifecycle().updateTestCase(testResultContainerUuid, setStatus(Status.PASSED));
         getLifecycle().stopTestCase(testResultContainerUuid);
         getLifecycle().writeTestCase(testResultContainerUuid);
-    }
-
-    public AllureLifecycle getLifecycle() {
-        return lifecycle;
     }
 
     private Consumer<TestResult> setStatus(final Status status) {

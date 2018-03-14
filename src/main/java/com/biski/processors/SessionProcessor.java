@@ -3,7 +3,6 @@ package com.biski.processors;
 import com.biski.objects.Session;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by wojciech on 13.01.18.

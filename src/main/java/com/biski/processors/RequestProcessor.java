@@ -45,10 +45,6 @@ public class RequestProcessor {
         parseRequest();
     }
 
-    public StringBuilder getHeaders() {
-        return headers;
-    }
-
     private Request parseRequest() {
         requestName = buffer.get(1).split(":")[0];
         isSuccessful = buffer.get(1).split(":")[1].trim().equals("OK");
@@ -65,7 +61,7 @@ public class RequestProcessor {
             }
 
             if (i < buffer.size() && buffer.get(i).equals("HTTP response:")) {
-                if(skipSuccessResponseBody && isSuccessful) {
+                if (skipSuccessResponseBody && isSuccessful) {
                     i++;
                 } else {
                     i = readResponse(i);
@@ -85,22 +81,6 @@ public class RequestProcessor {
             httpRequest.append(buffer.get(i++)).append("\n");
         }
         parseRequest(httpRequest);
-        return i;
-    }
-
-    private int readSession(int i) {
-        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-            sessionBuffer.append(buffer.get(i++)).append("\n");
-        }
-        session = new SessionProcessor(sessionBuffer).parse();
-        return i;
-    }
-
-    private int readResponse(int i) {
-        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
-            httpResponse.append(buffer.get(i++)).append("\n");
-        }
-        responseProcessor = new ResponseProcessor(httpResponse);
         return i;
     }
 
@@ -140,6 +120,26 @@ public class RequestProcessor {
                 sb.setLength(0);
             }
         }
+    }
+
+    private int readSession(int i) {
+        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
+            sessionBuffer.append(buffer.get(i++)).append("\n");
+        }
+        session = new SessionProcessor(sessionBuffer).parse();
+        return i;
+    }
+
+    private int readResponse(int i) {
+        while (i < buffer.size() && !buffer.get(i).contains(BREAK)) {
+            httpResponse.append(buffer.get(i++)).append("\n");
+        }
+        responseProcessor = new ResponseProcessor(httpResponse);
+        return i;
+    }
+
+    public StringBuilder getHeaders() {
+        return headers;
     }
 
     public String getRequestType() {
