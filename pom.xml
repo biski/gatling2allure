@@ -10,6 +10,7 @@
     <modules>
         <module>gatling2allure-maven-plugin</module>
         <module>gatling2allure-logs-converter</module>
+        <module>gatling2allure-maven-plugin-test</module>
     </modules>
 
     <packaging>pom</packaging>
