@@ -16,6 +16,9 @@ import java.nio.file.Paths;
 public class ConvertLogsToAllureData extends AbstractMojo {
 
 
+    @Parameter
+    private String pathToResults = "target/";
+
     @Parameter(required = true)
     private String pathToLogs;
 
@@ -25,7 +28,10 @@ public class ConvertLogsToAllureData extends AbstractMojo {
 
         GatlingToAllure converter = new GatlingToAllure();
         try {
-            converter.convert(Paths.get(pathToLogs));
+
+            converter
+                    .setPathToResults("target/")
+                    .convert(Paths.get(pathToLogs));
         } catch (IOException e) {
             getLog().error("Cannot read logs from path: " + pathToLogs);
         }

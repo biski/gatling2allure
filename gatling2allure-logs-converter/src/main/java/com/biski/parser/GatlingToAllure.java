@@ -31,6 +31,12 @@ public class GatlingToAllure {
     private static final String APPLICATION_JSON = "application/json";
     private HashMap<String, String> createdTestResults = new HashMap<>();
 
+    private String pathToResults;
+    public GatlingToAllure setPathToResults(String path) {
+        pathToResults = path;
+        return this;
+    }
+
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             System.out.println("Put path to log file as argument.");
@@ -76,7 +82,7 @@ public class GatlingToAllure {
 
         System.out.println("Processing request " + i);
         String simulationName = request.getSession().getScenarioName() + " [" + request.getSession().getUserId() + "]";
-        FileSystemResultsWriter writer = new FileSystemResultsWriter(new File(ALLURE_RESULTS_DIR).toPath());
+        FileSystemResultsWriter writer = new FileSystemResultsWriter(new File(pathToResults + ALLURE_RESULTS_DIR).toPath());
 
         String uuid = createdTestResults.computeIfAbsent(simulationName, createNewTestResult(request, simulationName, writer));
         updateTestResult(request, writer, uuid);
@@ -84,7 +90,7 @@ public class GatlingToAllure {
 
     private void updateTestResult(RequestProcessor request, FileSystemResultsWriter writer, String uuid) {
         try {
-            Path path = new File(ALLURE_RESULTS_DIR + "/" + uuid + RESULTS_POSTFIX).toPath();
+            Path path = new File(pathToResults + ALLURE_RESULTS_DIR + "/" + uuid + RESULTS_POSTFIX).toPath();
             TestResult testResult = readTestResultFromFile(path);
 
             testResult.getLabels().add(new Label()
