@@ -8,7 +8,7 @@
     <artifactId>gatling2allure</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>gatlin2allure-maven-plugin</module>
+        <module>gatling2allure-maven-plugin</module>
         <module>gatling2allure-logs-converter</module>
     </modules>
 
