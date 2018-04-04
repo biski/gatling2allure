@@ -24,7 +24,7 @@ HTTP response:
 status=
 200 OK
 headers=
-Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id, Tum-User
+Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id
 Access-Control-Allow-Methods: GET, POST
 Access-Control-Allow-Origin: *
 API-Version: 1

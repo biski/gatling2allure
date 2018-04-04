@@ -29,7 +29,7 @@ public class SimpleRequestTest {
                 "status=\n" +
                 "200 OK\n" +
                 "headers=\n" +
-                "Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id, Tum-User\n" +
+                "Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id\n" +
                 "Access-Control-Allow-Methods: GET, POST\n" +
                 "Access-Control-Allow-Origin: *\n" +
                 "API-Version: 1\n" +
@@ -65,7 +65,7 @@ public class SimpleRequestTest {
                 "status=\n" +
                 "200 OK\n" +
                 "headers=\n" +
-                "Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id, Tum-User\n" +
+                "Access-Control-Allow-Headers: Content-Type, Authorization, Correlation-Id\n" +
                 "Access-Control-Allow-Methods: GET, POST\n" +
                 "Access-Control-Allow-Origin: *\n" +
                 "API-Version: 1\n" +
