@@ -7,8 +7,12 @@
     <groupId>com.wojtek</groupId>
     <artifactId>gatling2allure</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>gatlin2allure-maven-plugin</module>
+        <module>gatling2allure-logs-converter</module>
+    </modules>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>Gatling to Allure converter</name>
     <description>Convert yours Gatling logs to Allure report</description>
@@ -62,23 +66,5 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-java-commons</artifactId>
-            <version>${allure-java-commons.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20080701</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
 </project>

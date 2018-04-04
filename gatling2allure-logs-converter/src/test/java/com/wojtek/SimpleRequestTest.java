@@ -1,10 +1,9 @@
-import com.biski.parser.GatlingToAllure;
+package com.wojtek;
+
 import com.biski.processors.RequestProcessor;
 import com.biski.processors.ResponseProcessor;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by wojciech on 14.03.18.
  */
-public class SimpleRequest {
+public class SimpleRequestTest {
 
     @Test
     public void simplePassedRequest() throws IOException {
