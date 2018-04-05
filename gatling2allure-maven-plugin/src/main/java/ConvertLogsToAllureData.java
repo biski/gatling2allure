@@ -1,11 +1,10 @@
 import com.biski.parser.GatlingToAllure;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
@@ -15,28 +14,44 @@ import java.nio.file.Paths;
 @Mojo(name = "convertLogsToAllureData")
 public class ConvertLogsToAllureData extends AbstractMojo {
 
-
     @Parameter
     private String pathToResults = "target/";
 
     @Parameter(required = true)
     private String pathToLogs;
 
+    @Parameter(defaultValue = "false")
+    private boolean multipleSimulationLogs;
+
+    private GatlingToAllure converter;
+
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() {
         getLog().info("start");
 
-        GatlingToAllure converter = new GatlingToAllure();
-        try {
-
-            converter
-                    .setPathToResults("target/")
-                    .convert(Paths.get(pathToLogs));
-        } catch (IOException e) {
-            getLog().error("Cannot read logs from path: " + pathToLogs);
+        converter = new GatlingToAllure();
+        converter
+                .setPathToResults(pathToResults);
+        if (multipleSimulationLogs) {
+            try {
+                Files.list(Paths.get(pathToLogs))
+                        .filter(x -> x.getFileName().toString().endsWith("log"))
+                        .forEach(x -> convert(x.toAbsolutePath().toString()));
+            } catch (IOException e) {
+                getLog().error("Directory [" + pathToLogs + "] not found.", e);
+            }
+        } else {
+            convert(pathToLogs);
         }
 
         getLog().info("end");
+    }
 
+    private void convert(String pathToFile) {
+        try {
+            converter.convert(Paths.get(pathToFile));
+        } catch (Exception e) {
+            getLog().error("Cannot read logs from path: " + pathToLogs, e);
+        }
     }
 }

@@ -18,8 +18,9 @@
                 <artifactId>gatling2allure-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
-                    <pathToLogs>../target/simulation.log</pathToLogs>
+                    <pathToLogs>../gatling-demo-project/target</pathToLogs>
                     <pathToResults>target/</pathToResults>
+                    <multipleSimulationLogs>true</multipleSimulationLogs>
                 </configuration>
                 <executions>
                     <execution>

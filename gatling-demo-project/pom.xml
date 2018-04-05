@@ -63,6 +63,13 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.gatling/gatling-maven-plugin -->
+        <dependency>
+            <groupId>io.gatling</groupId>
+            <artifactId>gatling-maven-plugin</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -83,7 +90,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>testCompile</goal>
+                            <goal>compile</goal>
                         </goals>
                         <configuration>
                             <args>
@@ -96,6 +103,25 @@
                                 <arg>-language:postfixOps</arg>
                             </args>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.gatling</groupId>
+                <artifactId>gatling-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <disableCompiler>true</disableCompiler>
+                    <runMultipleSimulations>true</runMultipleSimulations>
+                    <includes>
+                        <include>simulations.ComputerWorld</include>
+                        <include>simulations.HttpSimulation1</include>
+                        <include>simulations.HttpSimulation2</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>
