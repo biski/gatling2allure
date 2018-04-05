@@ -174,13 +174,13 @@ public class GatlingToAllure {
             final List<Label> labels = new ArrayList<>(12);
             labels.addAll(Arrays.asList(
                     //Packages grouping
-                    new Label().withName("package").withValue(simulationName.split(" ")[0]),
+                    new Label().withName("package").withValue(simulationName.split("\\[")[0]),
 //                    new Label().withName("testClass").withValue("example test class"),
 //                    new Label().withName("testMethod").withValue("example test method"),
 
                     //xUnit grouping
                     new Label().withName("parentSuite").withValue("Gatling tests"),
-                    new Label().withName("suite").withValue(simulationName.split(" ")[0]),
+                    new Label().withName("suite").withValue(simulationName.split("\\[")[0]),
 //                    new Label().withName("subSuite").withValue("default"),
 
                     //Timeline grouping
