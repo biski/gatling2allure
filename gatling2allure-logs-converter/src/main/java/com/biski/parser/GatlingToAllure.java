@@ -29,6 +29,9 @@ public class GatlingToAllure {
     private static final String ALLURE_RESULTS_DIR = "allure-results";
     private static final String TEXT_PLAIN = "text/plain";
     private static final String APPLICATION_JSON = "application/json";
+
+    private static final Boolean ADD_PARENT_STEP_IF_REQUEST_IS_UNDER_GROUP = true;
+
     private HashMap<String, String> createdTestResults = new HashMap<>();
 
     private String pathToResults;
@@ -97,17 +100,7 @@ public class GatlingToAllure {
                     .withName(ResultsUtils.FEATURE_LABEL_NAME)
                     .withValue(request.getRequestName()));
 
-            testResult.getSteps().add(
-                    new StepResult()
-                            .withName(request.getRequestType() + " " + request.getRequestName())
-                            .withAttachments(
-                                    getAttachments(writer, request)
-                            )
-                            .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
-                            .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
-                            .withStart(request.getSession().getStartDate())
-
-            );
+            updateStep(request, writer, testResult);
 
             if (!request.getSuccessful()) {
                 testResult.setStatus(Status.FAILED);
@@ -120,6 +113,40 @@ public class GatlingToAllure {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void updateStep(RequestProcessor request, FileSystemResultsWriter writer, TestResult testResult) {
+        List<StepResult> parentSteps;
+        if(ADD_PARENT_STEP_IF_REQUEST_IS_UNDER_GROUP && request.getGroup().isPresent()) {
+            System.out.println("ADD_PARENT_STEP_IF_REQUEST_IS_UNDER_GROUP");
+
+            String gatlingGroupName = request.getGroup().get();
+            StepResult groupStep = testResult.getSteps().stream()
+                    .filter(x -> x.getName().equals(gatlingGroupName))
+                    .findFirst()
+                    .orElseGet(() -> {
+                        StepResult newGroupStep = new StepResult();
+                        testResult.getSteps().add(newGroupStep);
+                        return newGroupStep;
+                    });
+            parentSteps = groupStep.getSteps();
+        } else {
+            parentSteps = testResult.getSteps();
+        }
+
+        addNewStepToTestCase(request, writer, parentSteps);
+    }
+
+    private void addNewStepToTestCase(RequestProcessor request, FileSystemResultsWriter writer, List<StepResult> parentSteps) {
+        parentSteps.add(
+                new StepResult()
+                        .withName(request.getRequestType() + " " + request.getRequestName())
+                        .withAttachments(getAttachments(writer, request))
+                        .withStatus(request.getSuccessful() ? Status.PASSED : Status.FAILED)
+                        .withStatusDetails(new StatusDetails().withMessage(request.getFailureMessage()).withTrace(""))
+                        .withStart(request.getSession().getStartDate())
+                        .withStop(request.getSession().getStartDate())
+        );
     }
 
     private void updateTestResultFile(FileSystemResultsWriter writer, Path path, TestResult testResult) throws IOException {

@@ -6,6 +6,8 @@ import com.biski.parser.JsonFormatter;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * buff.append(Eol).append(">>>>>>>>>>>>>>>>>>>>>>>>>>").append(Eol)
@@ -131,6 +133,15 @@ public class RequestProcessor {
         }
         session = new SessionProcessor(sessionBuffer).parse();
         return i;
+    }
+
+    // todo przeniesc to do session
+    public Optional<String> getGroup() {
+        Matcher matcher = Pattern.compile("GroupBlock\\(List\\(([^\\)]+)").matcher(sessionBuffer.toString());
+        if(matcher.matches())
+            return Optional.of(matcher.group());
+        else
+            return Optional.empty();
     }
 
     private int readResponse(int i) {

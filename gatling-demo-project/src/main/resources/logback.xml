@@ -8,10 +8,10 @@
     <immediateFlush>false</immediateFlush>
 	</appender>
 
-	<timestamp key="bySecond" datePattern="yyyyMMddHHmmss" />
+	<timestamp key="date" datePattern="yyyyMMddHHmmss" />
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>target/simulation-${bySecond}.log</file>
+		<file>target/simulation-${date}.log</file>
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
 		</encoder>
