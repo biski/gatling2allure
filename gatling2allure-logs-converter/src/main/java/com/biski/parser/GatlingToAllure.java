@@ -63,7 +63,7 @@ public class GatlingToAllure {
         ArrayList<String> buff = new ArrayList<>(500);
         String line;
         Boolean isRequest = false;
-        int i = 0;
+        int idOfRequest = 0;
         while ((line = bufferedReader.readLine()) != null) {
             switch (line) {
                 case REQUEST_START:
@@ -71,7 +71,7 @@ public class GatlingToAllure {
                     break;
                 case REQUEST_END:
                     isRequest = false;
-                    createOrUpdateAllureTest(new RequestProcessor(buff), i++);
+                    createOrUpdateAllureTest(new RequestProcessor(buff), idOfRequest++);
                     buff.clear();
                     break;
                 default:
@@ -81,9 +81,9 @@ public class GatlingToAllure {
         }
     }
 
-    private void createOrUpdateAllureTest(RequestProcessor request, int i) {
+    private void createOrUpdateAllureTest(RequestProcessor request, int idOfRequest) {
 
-        System.out.println("Processing request " + i);
+        System.out.println("Processing request " + idOfRequest);
         String simulationName = request.getSession().getScenarioName() + " [" + request.getSession().getUserId() + "]";
         FileSystemResultsWriter writer = new FileSystemResultsWriter(new File(pathToResults + ALLURE_RESULTS_DIR).toPath());
 
