@@ -1,0 +1,2121 @@
+12:55:57.899 [INFO ] i.g.h.a.HttpEngine - Start warm up
+12:55:58.427 [INFO ] i.g.h.a.HttpEngine - Warm up done
+12:55:58.848 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request before group: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288),1525085758647,0,OK,List(),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:58 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:58.932 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request before group Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers),1525085758647,0,OK,List(),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:58 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:58.995 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 0),1525085758647,24,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,49,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:58 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.054 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 0),1525085758647,24,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,106,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.111 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 1),1525085758647,26,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,160,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.168 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 1),1525085758647,26,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,215,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.217 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 2),1525085758647,28,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,262,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.274 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 2),1525085758647,28,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,317,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.326 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 3),1525085758647,31,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,367,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.384 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 3),1525085758647,31,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,422,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.433 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 4),1525085758647,33,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,468,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.492 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request in repeat Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers, 97588a4f-4669-45f9-a2ae-2262d12f8937 -> 4),1525085758647,33,OK,List(ExitOnCompleteLoopBlock(97588a4f-4669-45f9-a2ae-2262d12f8937), GroupBlock(List(group name),1525085758937,526,OK)),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.552 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request after group: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers),1525085758647,35,OK,List(),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+303 See Other
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Length: 0
+Connection: keep-alive
+Keep-Alive: timeout=5
+Location: /computers
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<
+12:55:59.612 [TRACE] i.g.h.a.ResponseProcessor - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+Request:
+request after group Redirect 1: OK 
+=========================
+Session:
+Session(Scenario with repeats and groups,1,Map(gatling.http.cache.dns -> io.gatling.http.resolver.ShuffleJdkNameResolver@30b31288, gatling.http.referer -> http://computer-database.gatling.io/computers),1525085758647,35,OK,List(),io.gatling.core.protocol.ProtocolComponentsRegistry$$Lambda$396/140428850@c9180f3)
+=========================
+HTTP request:
+GET http://computer-database.gatling.io/computers
+headers=
+Accept: application/xml, text/html, text/plain, application/json, */*
+Accept-Charset: UTF-8
+Accept-Encoding: gzip, deflate
+Referer: http://computer-database.gatling.io/computers
+Host: computer-database.gatling.io
+=========================
+HTTP response:
+status=
+200 OK
+headers= 
+Server: nginx/1.12.1
+Date: Mon, 30 Apr 2018 10:55:59 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7249
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+body=
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Computers database</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/bootstrap.min.css"> 
+        <link rel="stylesheet" type="text/css" media="screen" href="/assets/stylesheets/main.css"> 
+    </head>
+    <body>
+        
+        <header class="topbar">
+            <h1 class="fill">
+                <a href="/">
+                    Play sample application &mdash; Computer database
+                </a>
+            </h1>
+        </header>
+        
+        <section id="main">
+            
+    
+    <h1>598 computers found</h1>
+
+    
+
+    <div id="actions">
+        
+         
+
+<form action="/computers" method="GET" >
+    
+            <input type="search" id="searchbox" name="f" value="" placeholder="Filter by computer name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        
+</form>
+
+        
+        <a class="btn success" id="add" href="/computers/new">Add a new computer</a>
+        
+    </div>
+    
+    
+        
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    
+    <th class="col2 header headerSortUp">
+        <a href="/computers?s=-2">Computer name</a>
+    </th>
+
+                    
+    <th class="col3 header ">
+        <a href="/computers?s=3">Introduced</a>
+    </th>
+
+                    
+    <th class="col4 header ">
+        <a href="/computers?s=4">Discontinued</a>
+    </th>
+
+                    
+    <th class="col5 header ">
+        <a href="/computers?s=5">Company</a>
+    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                
+                        <tr>
+                            <td><a href="/computers/381">ACE</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/501">AN/FSQ-32</a></td>
+                            <td>
+                                01 Jan 1960
+                            </td>
+                            <td>
+                                05 Apr 2018
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/500">AN/FSQ-7</a></td>
+                            <td>
+                                01 Jan 1958
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/388">APEXC</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/355">ARRA</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/385">ASCI Blue Mountain</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/313">ASCI Blue Pacific</a></td>
+                            <td>
+                                01 Jan 1998
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/384">ASCI Purple</a></td>
+                            <td>
+                                01 Jan 2005
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                IBM
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/382">ASCI Red</a></td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="/computers/383">ASCI Thors Hammer</a></td>
+                            <td>
+                                12 Aug 2001
+                            </td>
+                            <td>
+                                 <em>-</em> 
+                            </td>
+                            <td>
+                                Netronics
+                            </td>
+                        </tr>
+                    
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                
+                <li class="current">
+                    <a>Displaying 1 to 10 of 598</a>
+                </li>
+                
+                    <li class="next">
+                        <a href="/computers?p=1">Next &rarr;</a>
+                    </li> 
+                
+            </ul>
+        </div>
+        
+    
+
+        
+
+        </section>
+        
+    </body>
+</html>
+
+
+            
+<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -121,11 +121,14 @@ public class GatlingToAllure {
             System.out.println("ADD_PARENT_STEP_IF_REQUEST_IS_UNDER_GROUP");
 
             String gatlingGroupName = request.getGroup().get();
+//            System.out.println("Group name: " + gatlingGroupName);
             StepResult groupStep = testResult.getSteps().stream()
-                    .filter(x -> x.getName().equals(gatlingGroupName))
+                    .filter(x -> gatlingGroupName.equals(x.getName()))
                     .findFirst()
                     .orElseGet(() -> {
-                        StepResult newGroupStep = new StepResult();
+                        StepResult newGroupStep = new StepResult()
+                                .withName(gatlingGroupName)
+                                .withDescription("xxxxxxxxxx");
                         testResult.getSteps().add(newGroupStep);
                         return newGroupStep;
                     });

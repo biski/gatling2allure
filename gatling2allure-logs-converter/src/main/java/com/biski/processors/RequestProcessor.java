@@ -137,9 +137,9 @@ public class RequestProcessor {
 
     // todo przeniesc to do session
     public Optional<String> getGroup() {
-        Matcher matcher = Pattern.compile("GroupBlock\\(List\\(([^\\)]+)").matcher(sessionBuffer.toString());
-        if(matcher.matches())
-            return Optional.of(matcher.group());
+        Matcher matcher = Pattern.compile("GroupBlock\\(List\\(([^)]+)").matcher(sessionBuffer.toString());
+        if(matcher.find())
+            return Optional.of(matcher.group(1));
         else
             return Optional.empty();
     }
