@@ -120,7 +120,7 @@ public class RequestProcessor {
                 }
                 String requestData = sb.toString().trim();
                 if (!requestData.equals("")) {
-                    stringBody = new JsonFormatter().format(requestData);
+                    stringBody = JsonFormatter.format(requestData);
                 }
                 sb.setLength(0);
             }
