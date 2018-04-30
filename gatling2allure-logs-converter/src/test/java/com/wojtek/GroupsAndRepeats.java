@@ -3,6 +3,7 @@ package com.wojtek;
 import com.biski.parser.GatlingToAllure;
 import io.qameta.allure.model.Allure2ModelJackson;
 import io.qameta.allure.model.TestResult;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -37,7 +38,9 @@ public class GroupsAndRepeats {
                         Files.newInputStream(pathToResult),
                         TestResult.class);
 
-        testResult.getUuid();
+        Assert.assertEquals(testResult.getSteps().size(), 5);
+        Assert.assertEquals(testResult.getSteps().stream().filter(x -> "group name".equals(x.getName())).count(), 1);
+        Assert.assertEquals(testResult.getSteps().stream().filter(x -> "group name".equals(x.getName())).findFirst().get().getSteps().size(), 10);
 
     }
 
