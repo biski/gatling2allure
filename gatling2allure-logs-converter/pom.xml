@@ -11,6 +11,28 @@
     <groupId>com.biski</groupId>
     <version>1.0-SNAPSHOT</version>
 
+    <scm>
+        <url>https://github.com/biski/gatling2allure</url>
+    </scm>
+
+    <name>Gatling to Allure converter</name>
+    <description>Generate Allure reports to Gatling tests</description>
+
+    <developers>
+        <developer>
+            <name>Wojciech Biskowski</name>
+            <email>wbiskowski[at]gmail.com</email>
+        </developer>
+    </developers>
+
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <main.class>com.biski.gatling2allure.parser.GatlingToAllure</main.class>

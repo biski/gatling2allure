@@ -15,15 +15,7 @@
 
     <packaging>pom</packaging>
 
-    <name>Gatling to Allure converter</name>
-    <description>Convert yours Gatling logs to Allure report</description>
 
-    <developers>
-        <developer>
-            <name>Wojciech Biskowski</name>
-            <email>wbiskowski[at]gmail.com</email>
-        </developer>
-    </developers>
 
     <properties>
         <main.class>GatlingToAllure</main.class>
