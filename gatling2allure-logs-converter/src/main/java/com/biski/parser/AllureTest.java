@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Created by wojciech on 25.11.17.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 25.11.17.
  */
 public class AllureTest {
 

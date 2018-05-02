@@ -19,7 +19,7 @@ import static io.qameta.allure.util.ResultsUtils.getHostName;
 import static io.qameta.allure.util.ResultsUtils.getThreadName;
 
 /**
- * Created by wojciech on 25.11.17.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 25.11.17.
  */
 public class GatlingToAllure {
 

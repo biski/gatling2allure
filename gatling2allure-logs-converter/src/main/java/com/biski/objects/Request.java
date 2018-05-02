@@ -1,7 +1,7 @@
 package com.biski.objects;
 
 /**
- * Created by wojciech on 14.01.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 14.01.18.
  */
 public class Request {
     Session session;

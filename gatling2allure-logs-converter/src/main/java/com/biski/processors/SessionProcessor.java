@@ -5,7 +5,7 @@ import com.biski.objects.Session;
 import java.util.ArrayList;
 
 /**
- * Created by wojciech on 13.01.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 13.01.18.
  */
 public class SessionProcessor {
     private StringBuilder session;

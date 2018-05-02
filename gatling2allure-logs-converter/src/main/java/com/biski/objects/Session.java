@@ -1,10 +1,7 @@
 package com.biski.objects;
 
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 /**
- * Created by wojciech on 14.01.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 14.01.18.
  */
 public class Session {
     String scenarioName;

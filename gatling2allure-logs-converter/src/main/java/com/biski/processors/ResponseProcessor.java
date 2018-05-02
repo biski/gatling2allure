@@ -4,7 +4,7 @@ package com.biski.processors;
 import com.biski.parser.JsonFormatter;
 
 /**
- * Created by wojciech on 13.01.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 13.01.18.
  */
 public class ResponseProcessor {
     private String response;

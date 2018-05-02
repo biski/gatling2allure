@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.testng.Assert.assertEquals;
 
 /**
- * Created by wojciech on 14.03.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 14.03.18.
  */
 public class SimpleRequestTest {
 
