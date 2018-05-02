@@ -1,6 +1,6 @@
-package com.wojtek;
+package com.biski;
 
-import com.biski.parser.GatlingToAllure;
+import com.biski.gatling2allure.parser.GatlingToAllure;
 import org.testng.annotations.Test;
 
 import java.io.IOException;

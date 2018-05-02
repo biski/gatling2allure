@@ -1,6 +1,6 @@
-package com.wojtek;
+package com.biski;
 
-import com.biski.parser.GatlingToAllure;
+import com.biski.gatling2allure.parser.GatlingToAllure;
 import io.qameta.allure.model.Allure2ModelJackson;
 import io.qameta.allure.model.TestResult;
 import org.testng.Assert;

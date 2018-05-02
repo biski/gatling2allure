@@ -1,6 +1,6 @@
-package com.biski.processors;
+package com.biski.gatling2allure.processors;
 
-import com.biski.objects.Session;
+import com.biski.gatling2allure.objects.Session;
 
 import java.util.ArrayList;
 

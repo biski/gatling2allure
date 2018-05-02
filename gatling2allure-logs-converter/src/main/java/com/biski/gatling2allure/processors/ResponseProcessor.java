@@ -1,7 +1,7 @@
-package com.biski.processors;
+package com.biski.gatling2allure.processors;
 
 
-import com.biski.parser.JsonFormatter;
+import com.biski.gatling2allure.parser.JsonFormatter;
 
 /**
  * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 13.01.18.

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>gatling2allure</artifactId>
-        <groupId>com.wojtek</groupId>
+        <groupId>com.biski</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>gatling-demo-project</artifactId>
@@ -128,7 +128,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.wojtek</groupId>
+                <groupId>com.biski</groupId>
                 <artifactId>gatling2allure-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>

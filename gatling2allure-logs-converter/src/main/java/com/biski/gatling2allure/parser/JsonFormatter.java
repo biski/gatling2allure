@@ -1,4 +1,4 @@
-package com.biski.parser;
+package com.biski.gatling2allure.parser;
 
 import org.json.JSONObject;
 

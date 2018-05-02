@@ -1,6 +1,6 @@
-package com.biski.parser;
+package com.biski.gatling2allure.parser;
 
-import com.biski.processors.RequestProcessor;
+import com.biski.gatling2allure.processors.RequestProcessor;
 import io.qameta.allure.FileSystemResultsWriter;
 import io.qameta.allure.model.*;
 import io.qameta.allure.util.ResultsUtils;

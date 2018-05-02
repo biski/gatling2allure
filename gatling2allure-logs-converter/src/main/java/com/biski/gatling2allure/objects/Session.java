@@ -1,4 +1,4 @@
-package com.biski.objects;
+package com.biski.gatling2allure.objects;
 
 /**
  * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 14.01.18.

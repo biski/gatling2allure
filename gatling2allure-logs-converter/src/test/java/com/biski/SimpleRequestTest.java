@@ -1,7 +1,7 @@
-package com.wojtek;
+package com.biski;
 
-import com.biski.processors.RequestProcessor;
-import com.biski.processors.ResponseProcessor;
+import com.biski.gatling2allure.processors.RequestProcessor;
+import com.biski.gatling2allure.processors.ResponseProcessor;
 import org.testng.annotations.Test;
 
 import java.io.IOException;

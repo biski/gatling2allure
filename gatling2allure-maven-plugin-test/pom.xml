@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>gatling2allure</artifactId>
-        <groupId>com.wojtek</groupId>
+        <groupId>com.biski</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -14,7 +14,7 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.wojtek</groupId>
+                <groupId>com.biski</groupId>
                 <artifactId>gatling2allure-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
