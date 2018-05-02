@@ -10,13 +10,15 @@ class HttpSimulation1 extends Simulation {
     .baseURL("http://computer-database.gatling.io")
 
   val scn = scenario("Scenario1")
-    .exec(
-      http("myRequest1")
-        .get("/")
-    )
+    .repeat(10) {
+      exec(
+        http("myRequest1")
+          .get("/")
+      )
+    }
 
 
   setUp(
-    scn.inject(atOnceUsers(1))
+    scn.inject(atOnceUsers(10))
   ).protocols(protocol)
 }
