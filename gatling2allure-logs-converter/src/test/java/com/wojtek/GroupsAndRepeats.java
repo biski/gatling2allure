@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by Wojciech Biskowski <wbiskowski@gmail.com> Biskowski <wbiskowski@gmail.com> on 30.04.18.
+ * Created by Wojciech Biskowski <wbiskowski@gmail.com> on 30.04.18.
  */
 public class GroupsAndRepeats {
 
