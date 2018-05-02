@@ -1,6 +1,5 @@
 package com.biski.processors;
 
-import com.biski.objects.Request;
 import com.biski.objects.Session;
 import com.biski.parser.JsonFormatter;
 
@@ -50,7 +49,7 @@ public class RequestProcessor {
         parseRequest();
     }
 
-    private Request parseRequest() {
+    private void parseRequest() {
         requestName = buffer.get(1).split(":")[0];
         isSuccessful = buffer.get(1).split(":")[1].trim().equals(PASSED);
 
@@ -78,7 +77,6 @@ public class RequestProcessor {
             }
         }
 
-        return new Request(session);
     }
 
     private int readRequest(int i) {
